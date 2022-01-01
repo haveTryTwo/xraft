@@ -9,31 +9,31 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 
-public class EntriesFile {
+public class EntriesFile { // NOTE: htt, 日志条目的数据文件，其中封装了 SeekableFile，基于此进行内容调整
 
-    private final SeekableFile seekableFile;
+    private final SeekableFile seekableFile;  // NOTE: htt, 封装文件读写相关操作
 
     public EntriesFile(File file) throws FileNotFoundException {
-        this(new RandomAccessFileAdapter(file));
+        this(new RandomAccessFileAdapter(file)); // NOTE: htt, 默认为随机度文件
     }
 
     public EntriesFile(SeekableFile seekableFile) {
         this.seekableFile = seekableFile;
     }
 
-    public long appendEntry(Entry entry) throws IOException {
+    public long appendEntry(Entry entry) throws IOException { // NOTE: htt, 写入日子和条目
         long offset = seekableFile.size();
-        seekableFile.seek(offset);
+        seekableFile.seek(offset); // NOTE: htt, 设置写入位置，为末尾
         seekableFile.writeInt(entry.getKind());
         seekableFile.writeInt(entry.getIndex());
         seekableFile.writeInt(entry.getTerm());
         byte[] commandBytes = entry.getCommandBytes();
-        seekableFile.writeInt(commandBytes.length);
-        seekableFile.write(commandBytes);
-        return offset;
+        seekableFile.writeInt(commandBytes.length); // NOTE: htt, 命令长度
+        seekableFile.write(commandBytes); // NOTE: htt, 命令内容
+        return offset; // NOTE: htt, 起始位置
     }
 
-    public Entry loadEntry(long offset, EntryFactory factory) throws IOException {
+    public Entry loadEntry(long offset, EntryFactory factory) throws IOException { // NOTE: htt, 读取日志条目
         if (offset > seekableFile.size()) {
             throw new IllegalArgumentException("offset > size");
         }
@@ -43,8 +43,8 @@ public class EntriesFile {
         int term = seekableFile.readInt();
         int length = seekableFile.readInt();
         byte[] bytes = new byte[length];
-        seekableFile.read(bytes);
-        return factory.create(kind, index, term, bytes);
+        seekableFile.read(bytes); // NOTE: htt, 读取内容
+        return factory.create(kind, index, term, bytes); // NOTE: htt, 根据kind生成对应的日志条目
     }
 
     public long size() throws IOException {

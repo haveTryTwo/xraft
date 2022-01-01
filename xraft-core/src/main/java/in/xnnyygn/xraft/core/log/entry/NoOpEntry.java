@@ -1,6 +1,6 @@
 package in.xnnyygn.xraft.core.log.entry;
 
-public class NoOpEntry extends AbstractEntry {
+public class NoOpEntry extends AbstractEntry { // NOTE: htt, 空操作，用于candidate选为master后会首先发送一条消息
 
     public NoOpEntry(int index, int term) {
         super(KIND_NO_OP, index, term);

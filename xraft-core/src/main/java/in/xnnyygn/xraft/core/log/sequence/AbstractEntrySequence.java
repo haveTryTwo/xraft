@@ -6,12 +6,12 @@ import in.xnnyygn.xraft.core.log.entry.EntryMeta;
 import java.util.Collections;
 import java.util.List;
 
-abstract class AbstractEntrySequence implements EntrySequence {
+abstract class AbstractEntrySequence implements EntrySequence { // NOTE: htt, 基于 日志序列 抽象实现
 
-    int logIndexOffset;
-    int nextLogIndex;
+    int logIndexOffset; // NOTE: htt, 日志 index，即第一个index
+    int nextLogIndex; // NOTE: htt, 下一个新的日志 next index， lastLogIndex = nextLogIndex - 1
 
-    AbstractEntrySequence(int logIndexOffset) {
+    AbstractEntrySequence(int logIndexOffset) { // NOTE: htt, 初始化时 logIndexOffset 和 nextLogIndex 一致，同时代表此时没有数据
         this.logIndexOffset = logIndexOffset;
         this.nextLogIndex = logIndexOffset;
     }
@@ -46,7 +46,7 @@ abstract class AbstractEntrySequence implements EntrySequence {
     }
 
     @Override
-    public boolean isEntryPresent(int index) {
+    public boolean isEntryPresent(int index) { // NOTE: htt, 日志在 [firstLogindex, lastLogindex] 范围内才有效
         return !isEmpty() && index >= doGetFirstLogIndex() && index <= doGetLastLogIndex();
     }
 
@@ -64,7 +64,7 @@ abstract class AbstractEntrySequence implements EntrySequence {
         return entry != null ? entry.getMeta() : null;
     }
 
-    protected abstract Entry doGetEntry(int index);
+    protected abstract Entry doGetEntry(int index);  // NOTE: htt, 返回指定位置的日志
 
     @Override
     public Entry getLastEntry() {
@@ -72,7 +72,7 @@ abstract class AbstractEntrySequence implements EntrySequence {
     }
 
     @Override
-    public List<Entry> subView(int fromIndex) {
+    public List<Entry> subView(int fromIndex) { // NOTE: htt, 返回 [fromIndex, )数据，其中起始位置关注和 firstLogIndex 大小
         if (isEmpty() || fromIndex > doGetLastLogIndex()) {
             return Collections.emptyList();
         }
@@ -107,17 +107,17 @@ abstract class AbstractEntrySequence implements EntrySequence {
 
     @Override
     public void append(Entry entry) {
-        if (entry.getIndex() != nextLogIndex) {
+        if (entry.getIndex() != nextLogIndex) { // NOTE: htt, 添加的日志的index 必须是系统中下一条要写入的index
             throw new IllegalArgumentException("entry index must be " + nextLogIndex);
         }
         doAppend(entry);
-        nextLogIndex++;
+        nextLogIndex++; // NOTE: htt, 增加next log index
     }
 
     protected abstract void doAppend(Entry entry);
 
     @Override
-    public void removeAfter(int index) {
+    public void removeAfter(int index) { // NOTE: htt, 删除 (index, ) 的数据
         if (isEmpty() || index >= doGetLastLogIndex()) {
             return;
         }

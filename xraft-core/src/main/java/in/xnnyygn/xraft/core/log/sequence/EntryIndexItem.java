@@ -5,10 +5,10 @@ import in.xnnyygn.xraft.core.log.entry.EntryMeta;
 import javax.annotation.concurrent.Immutable;
 
 @Immutable
-class EntryIndexItem {
+class EntryIndexItem { // NOTE: htt, 日志条目索引的 item
 
     private final int index;
-    private final long offset;
+    private final long offset; // NOTE: htt, 偏移，即日志文件中该条日志的位置
     private final int kind;
     private final int term;
 

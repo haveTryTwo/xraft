@@ -1,6 +1,6 @@
 package in.xnnyygn.xraft.core.log.entry;
 
-abstract class AbstractEntry implements Entry {
+abstract class AbstractEntry implements Entry { // NOTE: htt, 日志条码的抽象实现，即返回了 kind/index/term 信息
 
     private final int kind;
     protected final int index;
