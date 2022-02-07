@@ -21,7 +21,7 @@ public class EntriesFile { // NOTE: htt, 日志条目的数据文件，其中封
         this.seekableFile = seekableFile;
     }
 
-    public long appendEntry(Entry entry) throws IOException { // NOTE: htt, 写入日子和条目
+    public long appendEntry(Entry entry) throws IOException { // NOTE: htt, 写入日子和条目 TODO: htt, 这里没有校验index和nextIndex一致
         long offset = seekableFile.size();
         seekableFile.seek(offset); // NOTE: htt, 设置写入位置，为末尾
         seekableFile.writeInt(entry.getKind());

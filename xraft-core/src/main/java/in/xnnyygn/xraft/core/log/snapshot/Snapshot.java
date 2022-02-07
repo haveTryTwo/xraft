@@ -7,19 +7,19 @@ import java.io.InputStream;
 import java.util.Set;
 
 // TODO add doc
-public interface Snapshot {
+public interface Snapshot { // NOTE: htt, 快照信息
 
-    int getLastIncludedIndex();
+    int getLastIncludedIndex(); // NOTE: htt, 最后include的index
 
-    int getLastIncludedTerm();
+    int getLastIncludedTerm(); // NOTE: htt, 最后include的term
 
     @Nonnull
-    Set<NodeEndpoint> getLastConfig();
+    Set<NodeEndpoint> getLastConfig(); // NOTE: htt, 快照时刻的节点集合
 
     long getDataSize();
 
     @Nonnull
-    SnapshotChunk readData(int offset, int length);
+    SnapshotChunk readData(int offset, int length); // NOTE: htt, 每次读取的快照块
 
     @Nonnull
     InputStream getDataStream();

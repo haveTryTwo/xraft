@@ -1,8 +1,8 @@
 package in.xnnyygn.xraft.core.log.event;
 
-public class SnapshotGenerateEvent {
+public class SnapshotGenerateEvent { // NOTE: htt, 快照生成事件
 
-    private final int lastIncludedIndex;
+    private final int lastIncludedIndex; // NOTE: htt, 快照最后包括索引
 
     public SnapshotGenerateEvent(int lastIncludedIndex) {
         this.lastIncludedIndex = lastIncludedIndex;

@@ -1,6 +1,6 @@
 package in.xnnyygn.xraft.core.log.statemachine;
 
-public class StateMachineException extends RuntimeException {
+public class StateMachineException extends RuntimeException { // NOTE: htt, 状态机异常
 
     public StateMachineException(Throwable cause) {
         super(cause);

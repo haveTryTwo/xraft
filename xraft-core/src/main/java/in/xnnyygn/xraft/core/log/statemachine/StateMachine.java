@@ -9,9 +9,9 @@ import java.io.OutputStream;
 /**
  * State machine.
  */
-public interface StateMachine {
+public interface StateMachine { // NOTE: htt, 状态机信息
 
-    int getLastApplied();
+    int getLastApplied(); // NOTE: htt, 最后应用的index,
 
     void applyLog(StateMachineContext context, int index, @Nonnull byte[] commandBytes, int firstLogIndex);
 
@@ -22,7 +22,7 @@ public interface StateMachine {
      * @param lastApplied   last applied log index
      * @return true if should generate, otherwise false
      */
-    boolean shouldGenerateSnapshot(int firstLogIndex, int lastApplied);
+    boolean shouldGenerateSnapshot(int firstLogIndex, int lastApplied); // NOTE: htt, 在 [first, last] index区间是否要产生快照
 
     /**
      * Generate snapshot to output.
@@ -30,9 +30,9 @@ public interface StateMachine {
      * @param output output
      * @throws IOException if IO error occurred
      */
-    void generateSnapshot(@Nonnull OutputStream output) throws IOException;
+    void generateSnapshot(@Nonnull OutputStream output) throws IOException; // NOTE: htt, 生成快照
 
-    void applySnapshot(@Nonnull Snapshot snapshot) throws IOException;
+    void applySnapshot(@Nonnull Snapshot snapshot) throws IOException; // NOTE: htt, 从快照中应用数据到状态机
 
     void shutdown();
 

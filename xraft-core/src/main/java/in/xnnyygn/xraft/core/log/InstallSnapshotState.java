@@ -4,16 +4,16 @@ import in.xnnyygn.xraft.core.node.NodeEndpoint;
 
 import java.util.Set;
 
-public class InstallSnapshotState {
+public class InstallSnapshotState { // NOTE: htt, 安装快照状态
 
-    public enum StateName {
+    public enum StateName { // NOTE: htt, 安装快照状态
         ILLEGAL_INSTALL_SNAPSHOT_RPC,
         INSTALLING,
         INSTALLED
     }
 
-    private final StateName stateName;
-    private Set<NodeEndpoint> lastConfig;
+    private final StateName stateName; // NOTE: htt, 状态名称
+    private Set<NodeEndpoint> lastConfig; // NOTE: htt, 当前节点列表
 
     public InstallSnapshotState(StateName stateName) {
         this.stateName = stateName;

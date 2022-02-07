@@ -82,7 +82,7 @@ public class EntryIndexFile implements Iterable<EntryIndexItem> { // NOTE: htt, 
             seekableFile.writeInt(index); // NOTE: htt, 空文件写入第一个index为minEntryIndex
             minEntryIndex = index;
         } else {
-            if (index != maxEntryIndex + 1) {
+            if (index != maxEntryIndex + 1) { // NOTE: htt, 日志索引文件校验index和maxEntryIndex+1, 但是数据文件写入时没有校验
                 throw new IllegalArgumentException("index must be " + (maxEntryIndex + 1) + ", but was " + index);
             }
             seekableFile.seek(OFFSET_MAX_ENTRY_INDEX); // skip min entry index

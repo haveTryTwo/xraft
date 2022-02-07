@@ -10,7 +10,7 @@ import java.util.Collections;
 import java.util.Set;
 
 @Immutable
-public class EmptySnapshot implements Snapshot {
+public class EmptySnapshot implements Snapshot { // NOTE: htt, 空的snapshot
 
     @Override
     public int getLastIncludedIndex() {

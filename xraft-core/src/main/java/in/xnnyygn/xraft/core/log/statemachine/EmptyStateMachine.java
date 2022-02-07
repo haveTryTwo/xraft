@@ -6,7 +6,7 @@ import javax.annotation.Nonnull;
 import java.io.IOException;
 import java.io.OutputStream;
 
-public class EmptyStateMachine implements StateMachine {
+public class EmptyStateMachine implements StateMachine { // NOTE: htt, 空内容的状态机
 
     private int lastApplied = 0;
 

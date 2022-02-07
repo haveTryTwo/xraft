@@ -52,7 +52,7 @@ abstract class AbstractEntrySequence implements EntrySequence { // NOTE: htt, �
 
     @Override
     public Entry getEntry(int index) {
-        if (!isEntryPresent(index)) {
+        if (!isEntryPresent(index)) { // NOTE: htt, 检查当前是否有对应的index
             return null;
         }
         return doGetEntry(index);

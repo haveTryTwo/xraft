@@ -18,7 +18,7 @@ import java.util.Set;
  * @see in.xnnyygn.xraft.core.log.sequence.EntrySequence
  * @see in.xnnyygn.xraft.core.log.snapshot.Snapshot
  */
-public interface Log {
+public interface Log { // NOTE: htt, 日志，记录日志条目，生成快照等
 
     int ALL_ENTRIES = -1;
 
@@ -28,7 +28,7 @@ public interface Log {
      * @return entry meta
      */
     @Nonnull
-    EntryMeta getLastEntryMeta();
+    EntryMeta getLastEntryMeta(); // NOTE: htt, 获取最后一条日志条目元信息
 
     /**
      * Create append entries rpc from log.
@@ -58,7 +58,7 @@ public interface Log {
      * @return last committed group config entry, maybe {@code null}
      */
     @Nullable
-    GroupConfigEntry getLastUncommittedGroupConfigEntry();
+    GroupConfigEntry getLastUncommittedGroupConfigEntry(); // NOTE: htt, 获取未提交的组配置日志条目
 
     /**
      * Get next log index.
@@ -89,7 +89,7 @@ public interface Log {
      * @param term current term
      * @return no-op entry
      */
-    NoOpEntry appendEntry(int term);
+    NoOpEntry appendEntry(int term); // NOTE: htt, 添加 No-op 日志条目
 
     /**
      * Append a general log entry.
@@ -98,7 +98,7 @@ public interface Log {
      * @param command command in bytes
      * @return general entry
      */
-    GeneralEntry appendEntry(int term, byte[] command);
+    GeneralEntry appendEntry(int term, byte[] command); // NOTE: htt, 添加通用日志条目
 
     /**
      * Append a log entry for adding node.
@@ -108,7 +108,7 @@ public interface Log {
      * @param newNodeEndpoint new node config
      * @return add node entry
      */
-    AddNodeEntry appendEntryForAddNode(int term, Set<NodeEndpoint> nodeEndpoints, NodeEndpoint newNodeEndpoint);
+    AddNodeEntry appendEntryForAddNode(int term, Set<NodeEndpoint> nodeEndpoints, NodeEndpoint newNodeEndpoint); // NOTE: htt, 添加新增节点日志条目
 
     /**
      * Append a log entry for removing node.
@@ -118,7 +118,7 @@ public interface Log {
      * @param nodeToRemove  node to remove
      * @return remove node entry
      */
-    RemoveNodeEntry appendEntryForRemoveNode(int term, Set<NodeEndpoint> nodeEndpoints, NodeId nodeToRemove);
+    RemoveNodeEntry appendEntryForRemoveNode(int term, Set<NodeEndpoint> nodeEndpoints, NodeId nodeToRemove); // NOTE: htt, 添加删除日志条目
 
     /**
      * Append entries to log.
@@ -128,7 +128,7 @@ public interface Log {
      * @param entries      entries to append
      * @return true if success, false if previous log check failed
      */
-    boolean appendEntriesFromLeader(int prevLogIndex, int prevLogTerm, List<Entry> entries);
+    boolean appendEntriesFromLeader(int prevLogIndex, int prevLogTerm, List<Entry> entries); // NOTE: htt, 添加日志条目
 
     /**
      * Advance commit index.
@@ -141,7 +141,7 @@ public interface Log {
      * @param newCommitIndex new commit index
      * @param currentTerm    current term
      */
-    void advanceCommitIndex(int newCommitIndex, int currentTerm);
+    void advanceCommitIndex(int newCommitIndex, int currentTerm); // NOTE: htt, 推进提交的index
 
     /**
      * Install snapshot.
@@ -157,7 +157,7 @@ public interface Log {
      * @param lastIncludedIndex last included index
      * @param groupConfig       group config
      */
-    void generateSnapshot(int lastIncludedIndex, Set<NodeEndpoint> groupConfig);
+    void generateSnapshot(int lastIncludedIndex, Set<NodeEndpoint> groupConfig); // NOTE: htt, 生成快照
 
     /**
      * Set state machine.
@@ -171,7 +171,7 @@ public interface Log {
      *
      * @param stateMachine state machine
      */
-    void setStateMachine(StateMachine stateMachine);
+    void setStateMachine(StateMachine stateMachine); // NOTE: htt, 设置状态机
 
     /**
      * Close log files.

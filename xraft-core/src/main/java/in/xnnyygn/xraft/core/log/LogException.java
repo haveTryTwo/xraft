@@ -3,7 +3,7 @@ package in.xnnyygn.xraft.core.log;
 /**
  * Thrown when failed to operate log.
  */
-public class LogException extends RuntimeException {
+public class LogException extends RuntimeException { // NOTE: htt, 日志异常
 
     /**
      * Create.

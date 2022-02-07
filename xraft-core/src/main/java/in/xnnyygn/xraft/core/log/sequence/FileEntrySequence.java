@@ -180,8 +180,8 @@ public class FileEntrySequence extends AbstractEntrySequence { // NOTE: htt, 日
         Entry entry = null;
         try {
             for (int i = commitIndex + 1; i <= index; i++) { // TODO: htt, 可以加个校验， entry.getIndex() == i，这两个必须相等
-                entry = pendingEntries.removeFirst();
-                offset = entriesFile.appendEntry(entry); // NOTE: htt, 日志条目写入到数据文件
+                entry = pendingEntries.removeFirst(); // TODO: htt, 可以在最后删除，如磁盘满等异常
+                offset = entriesFile.appendEntry(entry); // NOTE: htt, 日志条目写入到数据文件 TODO:htt, 内部需要校验index和nextIndex一致性？
                 entryIndexFile.appendEntryIndex(i, offset, entry.getKind(), entry.getTerm()); // NOTE: htt, 写入日志条目索引文件
                 commitIndex = i; // NOTE: htt, 数据写入文件后，会同步递增 commitIndex
             }

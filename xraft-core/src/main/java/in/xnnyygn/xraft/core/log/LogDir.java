@@ -2,17 +2,17 @@ package in.xnnyygn.xraft.core.log;
 
 import java.io.File;
 
-public interface LogDir {
+public interface LogDir { // NOTE: htt, 日志条目目录
 
-    void initialize();
+    void initialize(); // NOTE: htt, 初始化目录
 
-    boolean exists();
+    boolean exists(); // NOTE: htt, 日志条目目录是否存在
 
-    File getSnapshotFile();
+    File getSnapshotFile(); // NOTE: htt, 日志快照
 
-    File getEntriesFile();
+    File getEntriesFile(); // NOTE: htt, 日志条目数据文件
 
-    File getEntryOffsetIndexFile();
+    File getEntryOffsetIndexFile(); // NOTE: htt, 日志条目索引文件
 
     File get();
 
