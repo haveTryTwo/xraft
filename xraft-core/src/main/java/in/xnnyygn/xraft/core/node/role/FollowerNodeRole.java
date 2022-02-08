@@ -7,10 +7,10 @@ import javax.annotation.concurrent.Immutable;
 import java.util.Objects;
 
 @Immutable
-public class FollowerNodeRole extends AbstractNodeRole {
+public class FollowerNodeRole extends AbstractNodeRole { // NOTE: htt, follower节点，关注当前leader节点以及已投票的节点
 
-    private final NodeId votedFor;
-    private final NodeId leaderId;
+    private final NodeId votedFor; // NOTE: htt, 投票节点信息
+    private final NodeId leaderId; // NOTE: htt, leader 节点信息
     private final ElectionTimeout electionTimeout;
 
     public FollowerNodeRole(int term, NodeId votedFor, NodeId leaderId, ElectionTimeout electionTimeout) {
@@ -34,7 +34,7 @@ public class FollowerNodeRole extends AbstractNodeRole {
     }
 
     @Override
-    public void cancelTimeoutOrTask() {
+    public void cancelTimeoutOrTask() { // NOTE: htt, 取消选举
         electionTimeout.cancel();
     }
 

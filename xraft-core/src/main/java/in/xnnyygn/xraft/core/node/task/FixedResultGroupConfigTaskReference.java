@@ -5,9 +5,9 @@ import in.xnnyygn.xraft.core.node.task.GroupConfigChangeTaskResult;
 
 import javax.annotation.Nonnull;
 
-public class FixedResultGroupConfigTaskReference implements GroupConfigChangeTaskReference {
+public class FixedResultGroupConfigTaskReference implements GroupConfigChangeTaskReference { // NOTE: htt, 组任务返回固定结果，该结果已经实现传入，索引 getResult()直接返回该结果
 
-    private final GroupConfigChangeTaskResult result;
+    private final GroupConfigChangeTaskResult result; // NOTE: htt, 配置变更的任务的执行结果
 
     public FixedResultGroupConfigTaskReference(GroupConfigChangeTaskResult result) {
         this.result = result;
@@ -16,7 +16,7 @@ public class FixedResultGroupConfigTaskReference implements GroupConfigChangeTas
     @Override
     @Nonnull
     public GroupConfigChangeTaskResult getResult() throws InterruptedException {
-        return result;
+        return result; // NOTE: htt, 立即返回
     }
 
     @Override

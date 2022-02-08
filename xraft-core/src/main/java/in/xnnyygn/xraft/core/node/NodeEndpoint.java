@@ -11,10 +11,10 @@ import java.util.Objects;
  * Node endpoint.
  */
 @Immutable
-public class NodeEndpoint {
+public class NodeEndpoint { // NOTE: htt, 节点信息，包括 节点id 和 <ip, port>
 
-    private final NodeId id;
-    private final Address address;
+    private final NodeId id; // NOTE: htt, 节点的id
+    private final Address address; // NOTE: htt, 节点的地址， 包括ip和port
 
     /**
      * Create.

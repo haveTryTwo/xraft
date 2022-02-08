@@ -1,6 +1,8 @@
 package in.xnnyygn.xraft.core.node.task;
 
-public enum  GroupConfigChangeTaskResult {
+import org.omg.CORBA.TIMEOUT;
+
+public enum  GroupConfigChangeTaskResult { // NOTE: htt, 配置变更的任务的执行结果
 
     OK,
     TIMEOUT,

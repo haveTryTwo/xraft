@@ -5,7 +5,7 @@ import in.xnnyygn.xraft.core.node.NodeEndpoint;
 /**
  * Task context for {@link NewNodeCatchUpTask}.
  */
-public interface NewNodeCatchUpTaskContext {
+public interface NewNodeCatchUpTaskContext { // NOTE: htt, 新增节点，先指定catchup从主同步数据，避免同步数据过程中其他节点出现异常导致无法选主
 
     /**
      * Replicate log to new node.

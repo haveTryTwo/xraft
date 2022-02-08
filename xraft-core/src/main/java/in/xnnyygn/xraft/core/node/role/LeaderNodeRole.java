@@ -6,9 +6,9 @@ import in.xnnyygn.xraft.core.schedule.LogReplicationTask;
 import javax.annotation.concurrent.Immutable;
 
 @Immutable
-public class LeaderNodeRole extends AbstractNodeRole {
+public class LeaderNodeRole extends AbstractNodeRole { // NOTE: htt, leader节点，主要处理日志同步
 
-    private final LogReplicationTask logReplicationTask;
+    private final LogReplicationTask logReplicationTask; // NOTE: htt, 日志同步任务
 
     public LeaderNodeRole(int term, LogReplicationTask logReplicationTask) {
         super(RoleName.LEADER, term);
@@ -33,7 +33,7 @@ public class LeaderNodeRole extends AbstractNodeRole {
     @Override
     protected boolean doStateEquals(AbstractNodeRole role) {
         return true;
-    }
+    } // TODO: htt, 仅仅只有一个leader，但是这里一定返回true?
 
     @Override
     public String toString() {

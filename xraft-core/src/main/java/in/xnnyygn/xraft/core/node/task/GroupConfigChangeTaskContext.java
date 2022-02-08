@@ -6,7 +6,7 @@ import in.xnnyygn.xraft.core.node.NodeId;
 /**
  * Task context for {@link GroupConfigChangeTask}.
  */
-public interface GroupConfigChangeTaskContext {
+public interface GroupConfigChangeTaskContext { // NOTE: htt, group配置变更任务的context
 
     /**
      * Add node.

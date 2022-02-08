@@ -9,12 +9,12 @@ import in.xnnyygn.xraft.core.node.NodeBuilder;
  * Node configuration should not change after initialization. e.g {@link NodeBuilder}.
  * </p>
  */
-public class NodeConfig {
+public class NodeConfig { // NOTE: htt, 节点的相关配置信息，主要是超时信息
 
     /**
      * Minimum election timeout
      */
-    private int minElectionTimeout = 3000;
+    private int minElectionTimeout = 3000; // NOTE: htt, 选举超时时间 [3000ms, 4000ms]
 
     /**
      * Maximum election timeout
@@ -32,13 +32,13 @@ public class NodeConfig {
      * Append entries rpc may be sent less than this interval.
      * e.g after receiving append entries result from followers.
      */
-    private int logReplicationInterval = 1000;
+    private int logReplicationInterval = 1000; // NOTE: htt, 心跳间隔 1000ms
 
     /**
      * Read timeout to receive response from follower.
      * If no response received from follower, resend log replication rpc.
      */
-    private int logReplicationReadTimeout = 900;
+    private int logReplicationReadTimeout = 900; // NOTE: htt, 日志超时时间 900ms
 
     /**
      * Max entries to send when replicate log to followers
@@ -53,12 +53,12 @@ public class NodeConfig {
     /**
      * Data length in install snapshot rpc.
      */
-    private int snapshotDataLength = 1024;
+    private int snapshotDataLength = 1024; // NOTE: htt, install 快照时 数据块 大小
 
     /**
      * Worker thread count in nio connector.
      */
-    private int nioWorkerThreads = 0;
+    private int nioWorkerThreads = 0; // NOTE: htt, nio 线程数
 
     /**
      * Max round for new node to catch up.
@@ -69,14 +69,14 @@ public class NodeConfig {
      * Read timeout to receive response from new node.
      * Default to election timeout.
      */
-    private int newNodeReadTimeout = 3000;
+    private int newNodeReadTimeout = 3000; // NOTE: htt, 新节点选举超时时间
 
     /**
      * Timeout for new node to make progress.
      * If new node cannot make progress after this timeout, new node cannot be added and reply TIMEOUT.
      * Default to election timeout
      */
-    private int newNodeAdvanceTimeout = 3000;
+    private int newNodeAdvanceTimeout = 3000; // NOTE: htt, 新节点加入超时时间
 
     /**
      * Timeout to wait for previous group config change to complete.

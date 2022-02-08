@@ -3,12 +3,12 @@ package in.xnnyygn.xraft.core.node;
 /**
  * Replicating state.
  */
-class ReplicatingState {
+class ReplicatingState { // NOTE: htt, 复制状态，包括 next index 和 match index
 
-    private int nextIndex;
-    private int matchIndex;
-    private boolean replicating = false;
-    private long lastReplicatedAt = 0;
+    private int nextIndex; // NOTE: htt, next index信息
+    private int matchIndex; // NOTE: htt, 和master match的index信息
+    private boolean replicating = false; // NOTE: htt, 是否为复制中
+    private long lastReplicatedAt = 0; // NOTE: htt, 最后复制对应的时间戳
 
     ReplicatingState(int nextIndex) {
         this(nextIndex, 0);
@@ -42,7 +42,7 @@ class ReplicatingState {
      *
      * @return true if decrease successfully, false if next index is less than or equal to {@code 1}
      */
-    boolean backOffNextIndex() {
+    boolean backOffNextIndex() { // NOTE: htt, 递减next index，以找到匹配位置
         if (nextIndex > 1) {
             nextIndex--;
             return true;
@@ -56,7 +56,7 @@ class ReplicatingState {
      * @param lastEntryIndex last entry index
      * @return true if advanced, false if no change
      */
-    boolean advance(int lastEntryIndex) {
+    boolean advance(int lastEntryIndex) { // NOTE: htt, 根据 last entry index 来更新 match/next index，并返回是正常推进还仅仅是改变
         // changed
         boolean result = (matchIndex != lastEntryIndex || nextIndex != (lastEntryIndex + 1));
 

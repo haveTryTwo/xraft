@@ -10,14 +10,14 @@ import java.io.File;
 import java.io.IOException;
 
 @NotThreadSafe
-public class FileNodeStore implements NodeStore {
+public class FileNodeStore implements NodeStore { // NOTE: htt, 文件存储当前节点的状态
 
     public static final String FILE_NAME = "node.bin";
     private static final long OFFSET_TERM = 0;
     private static final long OFFSET_VOTED_FOR = 4;
     private final SeekableFile seekableFile;
-    private int term = 0;
-    private NodeId votedFor = null;
+    private int term = 0; // NOTE: htt, term信息
+    private NodeId votedFor = null; // NOTE: htt, 投票节点信息
 
     public FileNodeStore(File file) {
         try {
@@ -25,7 +25,7 @@ public class FileNodeStore implements NodeStore {
                 Files.touch(file);
             }
             seekableFile = new RandomAccessFileAdapter(file);
-            initializeOrLoad();
+            initializeOrLoad(); // NOTE: htt, 初始化或者异常恢复时从文件读取
         } catch (IOException e) {
             throw new NodeStoreException(e);
         }
@@ -66,9 +66,9 @@ public class FileNodeStore implements NodeStore {
     }
 
     @Override
-    public void setTerm(int term) {
+    public void setTerm(int term) { // NOTE: htt, 直接更改磁盘数据
         try {
-            seekableFile.seek(OFFSET_TERM);
+            seekableFile.seek(OFFSET_TERM); // NOTE: htt, 将term写入文件
             seekableFile.writeInt(term);
         } catch (IOException e) {
             throw new NodeStoreException(e);
@@ -82,9 +82,9 @@ public class FileNodeStore implements NodeStore {
     }
 
     @Override
-    public void setVotedFor(NodeId votedFor) {
+    public void setVotedFor(NodeId votedFor) { // NOTE: htt, 直接更改磁盘数据
         try {
-            seekableFile.seek(OFFSET_VOTED_FOR);
+            seekableFile.seek(OFFSET_VOTED_FOR); // NOTE: htt, 先写入 投票节点名称长度，再写入投票节点信息
             if (votedFor == null) {
                 seekableFile.writeInt(0);
             } else {

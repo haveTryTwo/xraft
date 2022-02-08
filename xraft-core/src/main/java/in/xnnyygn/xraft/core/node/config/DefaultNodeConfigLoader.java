@@ -9,11 +9,11 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.util.Properties;
 
-public class DefaultNodeConfigLoader implements NodeConfigLoader {
+public class DefaultNodeConfigLoader implements NodeConfigLoader { // NOTE: htt, 默认的xraft配置加载方式
 
     private static final Logger logger = LoggerFactory.getLogger(DefaultNodeConfigLoader.class);
 
-    private final String propertyNamePrefix;
+    private final String propertyNamePrefix; // NOTE: htt, 指定配置的前缀； // TODO: htt, 未发现何处使用，这里待跟进
 
     public DefaultNodeConfigLoader() {
         this("");
@@ -25,7 +25,7 @@ public class DefaultNodeConfigLoader implements NodeConfigLoader {
 
     @Nonnull
     @Override
-    public NodeConfig load(@Nonnull InputStream input) throws IOException {
+    public NodeConfig load(@Nonnull InputStream input) throws IOException { // NOTE: htt, 从input流中加载配置信息
         Properties p = new Properties();
         p.load(input);
 

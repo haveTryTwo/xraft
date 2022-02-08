@@ -2,7 +2,7 @@ package in.xnnyygn.xraft.core.node.task;
 
 import in.xnnyygn.xraft.core.node.NodeId;
 
-public class NullGroupConfigChangeTask implements GroupConfigChangeTask {
+public class NullGroupConfigChangeTask implements GroupConfigChangeTask { // NOTE: htt, 没有group 配置变更的任务
 
     @Override
     public boolean isTargetNode(NodeId nodeId) {

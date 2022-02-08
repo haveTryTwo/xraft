@@ -27,27 +27,27 @@ import java.util.concurrent.Executors;
 /**
  * Node builder.
  */
-public class NodeBuilder {
+public class NodeBuilder { // NOTE: htt, 生成 NodeContext 信息
 
     /**
      * Group.
      */
-    private final NodeGroup group;
+    private final NodeGroup group; // NOTE: htt, 节点列表，记录当前节点，以及当前集群中的节点列表
 
     /**
      * Self id.
      */
-    private final NodeId selfId;
+    private final NodeId selfId; // NOTE: htt, 节点id
 
     /**
      * Event bus, INTERNAL.
      */
-    private final EventBus eventBus;
+    private final EventBus eventBus; // NOTE: htt, 队列发送
 
     /**
      * Node configuration.
      */
-    private NodeConfig config = new NodeConfig();
+    private NodeConfig config = new NodeConfig(); // NOTE: htt, 节点的相关配置信息，主要是超时信息
 
     /**
      * Starts as standby or not.
@@ -66,17 +66,17 @@ public class NodeBuilder {
      * If data directory specified, {@link FileNodeStore} will be created.
      * Default to {@link MemoryNodeStore}.
      */
-    private NodeStore store = null;
+    private NodeStore store = null; // NOTE: htt, 节点存储，处理 term以及投票的节点，用于节点异常之后恢复时获取之前投票信息
 
     /**
      * Scheduler, INTERNAL.
      */
-    private Scheduler scheduler = null;
+    private Scheduler scheduler = null;  // NOTE: htt, 选举调度，包括选举调度、日志同步调度
 
     /**
      * Connector, component to communicate between nodes, INTERNAL.
      */
-    private Connector connector = null;
+    private Connector connector = null; // NOTE: htt, 连接器，可以用来获取连接并发送请求
 
     /**
      * Task executor for node, INTERNAL.
@@ -233,8 +233,8 @@ public class NodeBuilder {
         if (!dataDir.isDirectory() || !dataDir.exists()) {
             throw new IllegalArgumentException("[" + dataDirPath + "] not a directory, or not exists");
         }
-        log = new FileLog(dataDir, eventBus);
-        store = new FileNodeStore(new File(dataDir, FileNodeStore.FILE_NAME));
+        log = new FileLog(dataDir, eventBus); // NOTE: htt, 根据指定的根目录 dataDirPath，然后读取 该目录下各个目录以及数据
+        store = new FileNodeStore(new File(dataDir, FileNodeStore.FILE_NAME)); // NOTE: htt, 根目录 dataDirPath/node.bin 存储节点信息
         return this;
     }
 
@@ -268,7 +268,7 @@ public class NodeBuilder {
         context.setTaskExecutor(taskExecutor != null ? taskExecutor : new ListeningTaskExecutor(
                 Executors.newSingleThreadExecutor(r -> new Thread(r, "node"))
         ));
-        // TODO share monitor
+        // TODO share monitor  // NOTE: htt, 设置成员变化任务，采用监听任务机制
         context.setGroupConfigChangeTaskExecutor(groupConfigChangeTaskExecutor != null ? groupConfigChangeTaskExecutor :
                 new ListeningTaskExecutor(Executors.newSingleThreadExecutor(r -> new Thread(r, "group-config-change"))));
         return context;
@@ -280,7 +280,7 @@ public class NodeBuilder {
      * @return nio connector
      */
     @Nonnull
-    private NioConnector createNioConnector() {
+    private NioConnector createNioConnector() { // NOTE: htt, 创建 nioConnector
         int port = group.findSelf().getEndpoint().getPort();
         if (workerNioEventLoopGroup != null) {
             return new NioConnector(workerNioEventLoopGroup, selfId, eventBus, port, config.getLogReplicationInterval());
@@ -298,10 +298,10 @@ public class NodeBuilder {
     @Nonnull
     private NodeMode evaluateMode() {
         if (standby) {
-            return NodeMode.STANDBY;
+            return NodeMode.STANDBY; // NOTE: htt, 单机模式
         }
         if (group.isStandalone()) {
-            return NodeMode.STANDALONE;
+            return NodeMode.STANDALONE; // NOTE: htt, 单节点模式
         }
         return NodeMode.GROUP_MEMBER;
     }

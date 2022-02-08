@@ -7,7 +7,7 @@ import javax.annotation.Nullable;
 /**
  * Node store.
  */
-public interface NodeStore {
+public interface NodeStore { // NOTE: htt, 节点存储，处理 term以及投票的节点，用于节点异常之后恢复时获取之前投票信息
 
     /**
      * Get term.

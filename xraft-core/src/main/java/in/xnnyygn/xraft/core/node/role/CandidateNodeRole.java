@@ -6,9 +6,9 @@ import in.xnnyygn.xraft.core.schedule.ElectionTimeout;
 import javax.annotation.concurrent.Immutable;
 
 @Immutable
-public class CandidateNodeRole extends AbstractNodeRole {
+public class CandidateNodeRole extends AbstractNodeRole { // NOTE: htt, candidate 节点，主要处理选举，关注投屏个数
 
-    private final int votesCount;
+    private final int votesCount; // NOTE: htt, 选举的票数
     private final ElectionTimeout electionTimeout;
 
     public CandidateNodeRole(int term, ElectionTimeout electionTimeout) {
@@ -32,18 +32,18 @@ public class CandidateNodeRole extends AbstractNodeRole {
 
     @Override
     public void cancelTimeoutOrTask() {
-        electionTimeout.cancel();
+        electionTimeout.cancel(); // NOTE: htt, 取消任务
     }
 
     @Override
-    public RoleState getState() {
+    public RoleState getState() { // NOTE: htt, 返回当前节点的角色信息
         DefaultRoleState state = new DefaultRoleState(RoleName.CANDIDATE, term);
-        state.setVotesCount(votesCount);
+        state.setVotesCount(votesCount); // NOTE: htt, 投票个数
         return state;
     }
 
     @Override
-    protected boolean doStateEquals(AbstractNodeRole role) {
+    protected boolean doStateEquals(AbstractNodeRole role) { // NOTE: htt, 判断状态是否相同
         CandidateNodeRole that = (CandidateNodeRole) role;
         return this.votesCount == that.votesCount;
     }

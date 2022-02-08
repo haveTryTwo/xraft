@@ -5,7 +5,7 @@ import in.xnnyygn.xraft.core.node.NodeId;
 import javax.annotation.concurrent.NotThreadSafe;
 
 @NotThreadSafe
-public class MemoryNodeStore implements NodeStore {
+public class MemoryNodeStore implements NodeStore { // NOTE: htt, 内存节点存储，返回内存保存的term/投票节点信息
 
     private int term;
     private NodeId votedFor;

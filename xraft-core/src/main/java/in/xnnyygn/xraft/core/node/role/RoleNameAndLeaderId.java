@@ -11,10 +11,10 @@ import javax.annotation.concurrent.Immutable;
  * Role name and leader id.
  */
 @Immutable
-public class RoleNameAndLeaderId {
+public class RoleNameAndLeaderId { // NOTE: htt, 节点角色以及 集群learderId
 
-    private final RoleName roleName;
-    private final NodeId leaderId;
+    private final RoleName roleName; // NOTE: htt, 节点角色
+    private final NodeId leaderId; // NOTE: htt, 集群中的 leaderid
 
     /**
      * Create.

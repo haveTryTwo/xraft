@@ -11,9 +11,9 @@ import java.util.Objects;
  * Node id.
  */
 @Immutable
-public class NodeId implements Serializable {
+public class NodeId implements Serializable { // NOTE: htt, 节点ID，对应的
 
-    private final String value;
+    private final String value; // NOTE: htt, node id信息
 
     /**
      * Create.

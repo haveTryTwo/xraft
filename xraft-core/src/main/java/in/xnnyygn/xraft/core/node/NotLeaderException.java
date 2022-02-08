@@ -9,7 +9,7 @@ import javax.annotation.Nullable;
 /**
  * Thrown when current node is not leader.
  */
-public class NotLeaderException extends RuntimeException {
+public class NotLeaderException extends RuntimeException { // NOTE: htt, 当前节点未非leader异常
 
     private final RoleName roleName;
     private final NodeEndpoint leaderEndpoint;

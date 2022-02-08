@@ -14,19 +14,19 @@ import in.xnnyygn.xraft.core.support.TaskExecutor;
  * Node context should not change after initialization. e.g {@link NodeBuilder}.
  * </p>
  */
-public class NodeContext {
+public class NodeContext { // NOTE: htt, 节点内容，包括 日志管理、连接发送，节点信息存储，选举调度，节点配置等
 
-    private NodeId selfId;
-    private NodeGroup group;
-    private Log log;
-    private Connector connector;
-    private NodeStore store;
-    private Scheduler scheduler;
-    private NodeMode mode;
-    private NodeConfig config;
-    private EventBus eventBus;
-    private TaskExecutor taskExecutor;
-    private TaskExecutor groupConfigChangeTaskExecutor;
+    private NodeId selfId; // NOTE: htt, 当前节点id
+    private NodeGroup group; // NOTE: htt, 集群节点列表
+    private Log log; // NOTE: htt, 日志，记录日志条目，生成快照等
+    private Connector connector; // NOTE: htt, 连接器，用来处理 raft中 选主、发送日志、以及快照安装请求
+    private NodeStore store; // NOTE: htt, 节点存储，处理 term以及投票的节点，用于节点异常之后恢复时获取之前投票信息
+    private Scheduler scheduler;  // NOTE: htt, 选举调度，包括选举调度、日志同步调度
+    private NodeMode mode;  // NOTE: htt, 系统节点启动模式
+    private NodeConfig config; // NOTE: htt, 节点的相关配置信息，主要是超时信息
+    private EventBus eventBus; // NOTE: htt, 内部同步队列
+    private TaskExecutor taskExecutor;  // NOTE: htt, 任务提交后执行
+    private TaskExecutor groupConfigChangeTaskExecutor;  // NOTE: htt, 组配置变更任务
 
     public NodeId selfId() {
         return selfId;

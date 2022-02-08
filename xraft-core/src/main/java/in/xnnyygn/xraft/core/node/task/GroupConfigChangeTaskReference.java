@@ -6,7 +6,7 @@ import java.util.concurrent.TimeoutException;
 /**
  * Reference for group config change task.
  */
-public interface GroupConfigChangeTaskReference {
+public interface GroupConfigChangeTaskReference { // NOTE: htt, group config 变化任务的引用
 
     /**
      * Wait for result forever.

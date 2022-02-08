@@ -5,11 +5,11 @@ package in.xnnyygn.xraft.core.node;
  *
  * @see ReplicatingState
  */
-class GroupMember {
+class GroupMember { // NOTE: htt, group成员，包括节点信息，复制状态
 
-    private final NodeEndpoint endpoint;
-    private ReplicatingState replicatingState;
-    private boolean major;
+    private final NodeEndpoint endpoint; // NOTE: htt, 节点信息， 包括 <id, <host, port> >
+    private ReplicatingState replicatingState; // NOTE: htt, 复制状态，包括 next index 和 match index
+    private boolean major; // NOTE: htt, 当前是为系统内可用，即已上线，不过才该字段这里是命名是否合适，是否可以使用状态上线来标记？
     private boolean removing = false;
 
     GroupMember(NodeEndpoint endpoint) {
@@ -85,7 +85,7 @@ class GroupMember {
         replicateAt(System.currentTimeMillis());
     }
 
-    void replicateAt(long replicatedAt) {
+    void replicateAt(long replicatedAt) { // NOTE: htt, 设置复制时间
         ReplicatingState replicatingState = ensureReplicatingState();
         replicatingState.setReplicating(true);
         replicatingState.setLastReplicatedAt(replicatedAt);
@@ -112,10 +112,10 @@ class GroupMember {
      * @param readTimeout read timeout
      * @return true if should, otherwise false
      */
-    boolean shouldReplicate(long readTimeout) {
+    boolean shouldReplicate(long readTimeout) { // NOTE: htt, 当前不在复制状态中 或者 复制的时间已经超过 readTimeout 则 可以启动复制
         ReplicatingState replicatingState = ensureReplicatingState();
         return !replicatingState.isReplicating() ||
-                System.currentTimeMillis() - replicatingState.getLastReplicatedAt() >= readTimeout;
+                System.currentTimeMillis() - replicatingState.getLastReplicatedAt() >= readTimeout; // NOTE: htt, 读超时时间范围内，继续等待
     }
 
     @Override

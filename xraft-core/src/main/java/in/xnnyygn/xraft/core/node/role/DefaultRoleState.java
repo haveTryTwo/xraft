@@ -7,13 +7,13 @@ import javax.annotation.Nonnull;
 /**
  * Default role state.
  */
-public class DefaultRoleState implements RoleState {
+public class DefaultRoleState implements RoleState { // NOTE: 默认节点状态实现，主要是提供接口具体对应的字段，并实现接口功能
 
-    private final RoleName roleName;
-    private final int term;
-    private int votesCount = VOTES_COUNT_NOT_SET;
-    private NodeId votedFor;
-    private NodeId leaderId;
+    private final RoleName roleName; // NOTE: htt, 角色名称
+    private final int term; // NOTE: htt, term
+    private int votesCount = VOTES_COUNT_NOT_SET; // NOTE: 当前角色投屏的个数
+    private NodeId votedFor; // NOTE: htt, 当前投票
+    private NodeId leaderId; // NOTE: htt, 当前的leader
 
     public DefaultRoleState(RoleName roleName, int term) {
         this.roleName = roleName;

@@ -9,7 +9,7 @@ import java.util.concurrent.Future;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.TimeoutException;
 
-public class FutureGroupConfigChangeTaskReference implements GroupConfigChangeTaskReference {
+public class FutureGroupConfigChangeTaskReference implements GroupConfigChangeTaskReference { // NOTE: htt, 任务执行提供future的引用，用于获取任务执行的结果
 
     private static final Logger logger = LoggerFactory.getLogger(FutureGroupConfigChangeTaskReference.class);
     private final Future<GroupConfigChangeTaskResult> future;
@@ -22,7 +22,7 @@ public class FutureGroupConfigChangeTaskReference implements GroupConfigChangeTa
     @Nonnull
     public GroupConfigChangeTaskResult getResult() throws InterruptedException {
         try {
-            return future.get();
+            return future.get(); // NOTE: htt, 一直等待
         } catch (ExecutionException e) {
             logger.warn("task execution failed", e);
             return GroupConfigChangeTaskResult.ERROR;
@@ -33,7 +33,7 @@ public class FutureGroupConfigChangeTaskReference implements GroupConfigChangeTa
     @Nonnull
     public GroupConfigChangeTaskResult getResult(long timeout) throws InterruptedException, TimeoutException {
         try {
-            return future.get(timeout, TimeUnit.MILLISECONDS);
+            return future.get(timeout, TimeUnit.MILLISECONDS); // NOTE: htt, 超时等待
         } catch (ExecutionException e) {
             logger.warn("task execution failed", e);
             return GroupConfigChangeTaskResult.ERROR;
@@ -43,6 +43,6 @@ public class FutureGroupConfigChangeTaskReference implements GroupConfigChangeTa
     @Override
     public void cancel() {
         future.cancel(true);
-    }
+    } // NOTE: htt, future cancel true会取消正在执行的任务
 
 }

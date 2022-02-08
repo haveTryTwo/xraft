@@ -13,11 +13,11 @@ import java.util.stream.Collectors;
  * Node group.
  */
 @NotThreadSafe
-class NodeGroup {
+class NodeGroup { // NOTE: htt, 节点列表，记录当前节点，以及当前集群中的节点列表
 
     private static final Logger logger = LoggerFactory.getLogger(NodeGroup.class);
-    private final NodeId selfId;
-    private Map<NodeId, GroupMember> memberMap;
+    private final NodeId selfId; // NOTE: empe, 当前节点 id
+    private Map<NodeId, GroupMember> memberMap; // NOTE: empe, 当前集群内节点的 id 以及 对应信息
 
     /**
      * Create group with single member(standalone).
@@ -51,7 +51,7 @@ class NodeGroup {
         for (NodeEndpoint endpoint : endpoints) {
             map.put(endpoint.getId(), new GroupMember(endpoint));
         }
-        if (map.isEmpty()) {
+        if (map.isEmpty()) { // TODO: htt, 仅仅校验为空，是否有其他的维度可以校验
             throw new IllegalArgumentException("endpoints is empty");
         }
         return map;
@@ -64,7 +64,7 @@ class NodeGroup {
      * @return count
      * @see GroupMember#isMajor()
      */
-    int getCountOfMajor() {
+    int getCountOfMajor() { // NOTE: empe, 获取 major 节点的个数
         return (int) memberMap.values().stream().filter(GroupMember::isMajor).count();
     }
 
@@ -124,7 +124,7 @@ class NodeGroup {
      * @throws IllegalArgumentException if member not found
      * @see #findMember(NodeId)
      */
-    void upgrade(NodeId id) {
+    void upgrade(NodeId id) { // NOTE: empe, 设置节点为 major，即上线
         logger.info("upgrade node {}", id);
         findMember(id).setMajor(true);
     }
@@ -132,13 +132,19 @@ class NodeGroup {
     /**
      * Downgrade member(set major to {@code false}).
      *
+     *  NOTE: htt, 针对 downgrade() 和 removeNode关系，处理流程：
+     *  1、执行节点下线请求
+     *  2、执行downgrade，将节点从group中设置为 非Major(不参与选主)，并设置removing
+     *  3、添加本地删除日志，并发送请求给follower
+     *  4、收到follower回包请求，并满足majority，执行 RemoveNodeTask.onLogCommitted()，删除removeNode()，即从group组中将节点完全删除
+     *
      * @param id id
      * @throws IllegalArgumentException if member not found
      */
-    void downgrade(NodeId id) {
+    void downgrade(NodeId id) { // NOTE: empe, 设置节点为 非major，即下线节点
         logger.info("downgrade node {}", id);
         GroupMember member = findMember(id);
-        member.setMajor(false);
+        member.setMajor(false); // NOTE: htt, 节点不在major，即不参与选举
         member.setRemoving();
     }
 
@@ -157,7 +163,7 @@ class NodeGroup {
      *
      * @param nextLogIndex next log index
      */
-    void resetReplicatingStates(int nextLogIndex) {
+    void resetReplicatingStates(int nextLogIndex) { // NOTE: htt, 设置非当前节点的迁移状态，并将 next log index 设置为参数值
         for (GroupMember member : memberMap.values()) {
             if (!member.idEquals(selfId)) {
                 member.setReplicatingState(new ReplicatingState(nextLogIndex));
@@ -174,7 +180,7 @@ class NodeGroup {
      *
      * @return match index
      */
-    int getMatchIndexOfMajor() {
+    int getMatchIndexOfMajor() { // NOTE: htt, 获取当前上线节点中大多数节点 match index
         List<NodeMatchIndex> matchIndices = new ArrayList<>();
         for (GroupMember member : memberMap.values()) {
             if (member.isMajor() && !member.idEquals(selfId)) {
@@ -187,7 +193,7 @@ class NodeGroup {
         }
         Collections.sort(matchIndices);
         logger.debug("match indices {}", matchIndices);
-        return matchIndices.get(count / 2).getMatchIndex();
+        return matchIndices.get(count / 2).getMatchIndex(); // NOTE: htt, 获取大多数match index
     }
 
     /**
@@ -196,7 +202,7 @@ class NodeGroup {
      *
      * @return replication targets.
      */
-    Collection<GroupMember> listReplicationTarget() {
+    Collection<GroupMember> listReplicationTarget() { // NOTE: htt, 获取非当前节点之外的所有节点
         return memberMap.values().stream().filter(m -> !m.idEquals(selfId)).collect(Collectors.toList());
     }
 
@@ -209,7 +215,7 @@ class NodeGroup {
      * @param major      major
      * @return added member
      */
-    GroupMember addNode(NodeEndpoint endpoint, int nextIndex, int matchIndex, boolean major) {
+    GroupMember addNode(NodeEndpoint endpoint, int nextIndex, int matchIndex, boolean major) { // NOTE: htt, 添加节点
         logger.info("add node {} to group", endpoint.getId());
         ReplicatingState replicatingState = new ReplicatingState(nextIndex, matchIndex);
         GroupMember member = new GroupMember(endpoint, replicatingState, major);
@@ -223,8 +229,8 @@ class NodeGroup {
      *
      * @param endpoints endpoints
      */
-    void updateNodes(Set<NodeEndpoint> endpoints) {
-        memberMap = buildMemberMap(endpoints);
+    void updateNodes(Set<NodeEndpoint> endpoints) { // NOTE: htt, 更新成员信息
+        memberMap = buildMemberMap(endpoints); // NOTE: htt, 完全更新当前的节点列表
         logger.info("group change changed -> {}", memberMap.keySet());
     }
 
@@ -233,7 +239,7 @@ class NodeGroup {
      *
      * @return endpoints
      */
-    Set<NodeEndpoint> listEndpointOfMajor() {
+    Set<NodeEndpoint> listEndpointOfMajor() { // NOTE: htt, 获取上线节点的列表
         Set<NodeEndpoint> endpoints = new HashSet<>();
         for (GroupMember member : memberMap.values()) {
             if (member.isMajor()) {
@@ -248,7 +254,7 @@ class NodeGroup {
      *
      * @return endpoints except self
      */
-    Set<NodeEndpoint> listEndpointOfMajorExceptSelf() {
+    Set<NodeEndpoint> listEndpointOfMajorExceptSelf() { // NOTE: htt, 获取上线节点的不包含当前节点的列表
         Set<NodeEndpoint> endpoints = new HashSet<>();
         for (GroupMember member : memberMap.values()) {
             if (member.isMajor() && !member.idEquals(selfId)) {
@@ -265,14 +271,14 @@ class NodeGroup {
      */
     boolean isStandalone() {
         return memberMap.size() == 1 && memberMap.containsKey(selfId);
-    }
+    } // NOTE: htt, 判断是否为独立节点
 
     /**
      * Node match index.
      *
      * @see NodeGroup#getMatchIndexOfMajor()
      */
-    private static class NodeMatchIndex implements Comparable<NodeMatchIndex> {
+    private static class NodeMatchIndex implements Comparable<NodeMatchIndex> { // NOTE: htt, 比较两个节点的 match index
 
         private final NodeId nodeId;
         private final int matchIndex;
