@@ -2,10 +2,10 @@ package in.xnnyygn.xraft.core.support;
 
 import java.io.*;
 
-public class RandomAccessFileAdapter implements SeekableFile {
+public class RandomAccessFileAdapter implements SeekableFile { // NOTE: htt, random 访问文件适配器，采用 RandomAccessFile 实现 SeekableFile操作
 
     private final File file;
-    private final RandomAccessFile randomAccessFile;
+    private final RandomAccessFile randomAccessFile; // NOTE: htt, 随机读写文件 TODO: htt, 采用RandomAccessFile由于直接进行操作系统调用，工业使用上存在性能问题
 
     public RandomAccessFileAdapter(File file) throws FileNotFoundException {
         this(file, "rw");
@@ -62,10 +62,10 @@ public class RandomAccessFileAdapter implements SeekableFile {
     }
 
     @Override
-    public InputStream inputStream(long start) throws IOException {
+    public InputStream inputStream(long start) throws IOException { // NOTE: htt, 跳到start位置的文件流
         FileInputStream input = new FileInputStream(file);
         if (start > 0) {
-            input.skip(start);
+            input.skip(start); // NOTE: htt, 跳到 start 位置，获取后可以从该位置进行读取
         }
         return input;
     }
@@ -77,6 +77,7 @@ public class RandomAccessFileAdapter implements SeekableFile {
 
     @Override
     public void flush() throws IOException {
+        randomAccessFile.getFD().sync(); // NOTE: htt, flush这里概念是将数据从操作系统的pagecache刷入到底层设备上
     }
 
     @Override

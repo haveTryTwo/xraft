@@ -7,11 +7,11 @@ import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 
-public class ByteArraySeekableFile implements SeekableFile {
+public class ByteArraySeekableFile implements SeekableFile { // NOTE: htt, 内存seekable file处理，直接读写内存数组
 
-    private byte[] content;
-    private int size;
-    private int position;
+    private byte[] content; // NOTE: htt, 字符内容
+    private int size; // NOTE: htt, 当前数组有内容的长度，在数据写入时会增加
+    private int position;  // NOTE: htt, 当前读写的位置，写入时和size一致，读取时做为变化的偏移量处理   TODO: 这两个变量用起来有些混乱，可以写入时在size上增加，读取时使用position
 
     public ByteArraySeekableFile() {
         this(new byte[0]);
@@ -37,10 +37,10 @@ public class ByteArraySeekableFile implements SeekableFile {
 
     @Override
     public void writeInt(int i) throws IOException {
-        write(Ints.toByteArray(i));
+        write(Ints.toByteArray(i)); // NOTE: htt, 将整型转换为 大端模式字符串
     }
 
-    private void ensureCapacity(int capacity) {
+    private void ensureCapacity(int capacity) {   // NOTE: htt, 确保数组容量够
         int oldLength = content.length;
         if (position + capacity <= oldLength) {
             return;
@@ -103,7 +103,7 @@ public class ByteArraySeekableFile implements SeekableFile {
         if (size < 0) {
             throw new IllegalArgumentException("size < 0");
         }
-        this.size = (int) size;
+        this.size = (int) size; // NOTE: htt, 调整其中size以及position字段
         if (position > this.size) {
             position = this.size;
         }

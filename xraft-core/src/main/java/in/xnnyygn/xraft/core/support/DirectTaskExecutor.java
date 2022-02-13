@@ -9,7 +9,7 @@ import java.util.concurrent.Callable;
 import java.util.concurrent.Future;
 import java.util.concurrent.FutureTask;
 
-public class DirectTaskExecutor extends AbstractTaskExecutor {
+public class DirectTaskExecutor extends AbstractTaskExecutor { // NOTE: htt, 直接执行任务
 
     private final boolean throwWhenFailed;
 
@@ -26,7 +26,7 @@ public class DirectTaskExecutor extends AbstractTaskExecutor {
     public Future<?> submit(@Nonnull Runnable task) {
         Preconditions.checkNotNull(task);
         FutureTask<?> futureTask = new FutureTask<>(task, null);
-        futureTask.run();
+        futureTask.run(); // NOTE: htt, 直接执行
         return futureTask;
     }
 
@@ -35,7 +35,7 @@ public class DirectTaskExecutor extends AbstractTaskExecutor {
     public <V> Future<V> submit(@Nonnull Callable<V> task) {
         Preconditions.checkNotNull(task);
         FutureTask<V> futureTask = new FutureTask<V>(task);
-        futureTask.run();
+        futureTask.run(); // NOTE: htt, 直接执行
         return futureTask;
     }
 
@@ -44,7 +44,7 @@ public class DirectTaskExecutor extends AbstractTaskExecutor {
         Preconditions.checkNotNull(task);
         Preconditions.checkNotNull(callbacks);
         try {
-            task.run();
+            task.run(); // NOTE: htt, 任务直接执行
             callbacks.forEach(c -> c.onSuccess(null));
         } catch (Throwable t) {
             callbacks.forEach(c -> c.onFailure(t));

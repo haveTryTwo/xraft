@@ -7,9 +7,9 @@ import javax.annotation.Nonnull;
 import java.util.Collection;
 import java.util.concurrent.*;
 
-public class SingleThreadTaskExecutor extends AbstractTaskExecutor {
+public class SingleThreadTaskExecutor extends AbstractTaskExecutor { // NOTE: htt, 单线程执行 Executor
 
-    private final ExecutorService executorService;
+    private final ExecutorService executorService; // NOTE: htt, 单线程池
 
     public SingleThreadTaskExecutor() {
         this(Executors.defaultThreadFactory());
@@ -20,14 +20,14 @@ public class SingleThreadTaskExecutor extends AbstractTaskExecutor {
     }
 
     private SingleThreadTaskExecutor(ThreadFactory threadFactory) {
-        executorService = Executors.newSingleThreadExecutor(threadFactory);
+        executorService = Executors.newSingleThreadExecutor(threadFactory); // NOTE: htt, 单线程
     }
 
     @Override
     @Nonnull
     public Future<?> submit(@Nonnull Runnable task) {
         Preconditions.checkNotNull(task);
-        return executorService.submit(task);
+        return executorService.submit(task); // NOTE: htt, 单线程执行任务
     }
 
     @Override
@@ -44,9 +44,9 @@ public class SingleThreadTaskExecutor extends AbstractTaskExecutor {
         executorService.submit(() -> {
             try {
                 task.run();
-                callbacks.forEach(c -> c.onSuccess(null));
+                callbacks.forEach(c -> c.onSuccess(null)); // NOTE: htt, 正常情况不关注，执行onSuccess即可
             } catch (Exception e) {
-                callbacks.forEach(c -> c.onFailure(e));
+                callbacks.forEach(c -> c.onFailure(e)); // NOTE: htt, 获取 task执行的异常情况
             }
         });
     }
@@ -54,7 +54,7 @@ public class SingleThreadTaskExecutor extends AbstractTaskExecutor {
     @Override
     public void shutdown() throws InterruptedException {
         executorService.shutdown();
-        executorService.awaitTermination(1, TimeUnit.SECONDS);
+        executorService.awaitTermination(1, TimeUnit.SECONDS); // NOTE: htt, 等待1s终止？
     }
 
 }

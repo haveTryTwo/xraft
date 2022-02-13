@@ -3,7 +3,7 @@ package in.xnnyygn.xraft.core.support;
 import java.io.IOException;
 import java.io.InputStream;
 
-public interface SeekableFile {
+public interface SeekableFile { // NOTE: htt, 封装文件读写相关操作
 
     long position() throws IOException;
 

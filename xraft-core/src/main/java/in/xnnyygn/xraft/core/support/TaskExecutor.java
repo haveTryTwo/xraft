@@ -10,7 +10,7 @@ import java.util.concurrent.Future;
 /**
  * Task executor.
  */
-public interface TaskExecutor {
+public interface TaskExecutor { // NOTE: htt, 任务提交后执行
 
     /**
      * Submit task.
