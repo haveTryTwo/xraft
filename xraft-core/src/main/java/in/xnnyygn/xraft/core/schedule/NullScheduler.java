@@ -5,7 +5,7 @@ import org.slf4j.LoggerFactory;
 
 import javax.annotation.Nonnull;
 
-public class NullScheduler implements Scheduler {
+public class NullScheduler implements Scheduler { // NOTE: htt, 空调度，其中选主和日志同步都返回NONE
 
     private static final Logger logger = LoggerFactory.getLogger(NullScheduler.class);
 

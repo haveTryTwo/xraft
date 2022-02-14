@@ -3,7 +3,7 @@ package in.xnnyygn.xraft.core.schedule;
 import javax.annotation.Nonnull;
 import java.util.concurrent.*;
 
-public class NullScheduledFuture implements ScheduledFuture<Object> {
+public class NullScheduledFuture implements ScheduledFuture<Object> { // NOTE: htt, 空的scheduled future, get() 返回null
 
     @Override
     public long getDelay(@Nonnull TimeUnit unit) {

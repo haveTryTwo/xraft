@@ -494,7 +494,7 @@ public class NodeImpl implements Node {
             return new RequestVoteResult(rpc.getTerm(), voteForCandidate);
         }
 
-        assert rpc.getTerm() == role.getTerm();
+        assert rpc.getTerm() == role.getTerm(); // NOTE: htt, 此时的term必然相等
         switch (role.getName()) {
             case FOLLOWER:
                 FollowerNodeRole follower = (FollowerNodeRole) role;

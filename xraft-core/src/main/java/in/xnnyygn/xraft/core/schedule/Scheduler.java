@@ -6,7 +6,7 @@ import javax.annotation.Nonnull;
  * Scheduler.
  */
 // TODO optimize
-public interface Scheduler {
+public interface Scheduler { // NOTE: htt, 选举调度，包括选举调度、日志同步调度
 
     /**
      * Schedule log replication task.
@@ -15,7 +15,7 @@ public interface Scheduler {
      * @return log replication task
      */
     @Nonnull
-    LogReplicationTask scheduleLogReplicationTask(@Nonnull Runnable task);
+    LogReplicationTask scheduleLogReplicationTask(@Nonnull Runnable task); // NOTE: htt, 日志同步调度
 
     /**
      * Schedule election timeout.
@@ -24,7 +24,7 @@ public interface Scheduler {
      * @return election timeout
      */
     @Nonnull
-    ElectionTimeout scheduleElectionTimeout(@Nonnull Runnable task);
+    ElectionTimeout scheduleElectionTimeout(@Nonnull Runnable task); // NOTE: htt, leader选举
 
     /**
      * Stop scheduler.

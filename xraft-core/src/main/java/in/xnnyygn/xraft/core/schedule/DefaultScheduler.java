@@ -14,15 +14,15 @@ import java.util.concurrent.ScheduledFuture;
 import java.util.concurrent.TimeUnit;
 
 @ThreadSafe
-public class DefaultScheduler implements Scheduler {
+public class DefaultScheduler implements Scheduler { // NOTE: htt, 默认调度策略，包括 选主和日志复制策略
 
     private static final Logger logger = LoggerFactory.getLogger(DefaultScheduler.class);
-    private final int minElectionTimeout;
-    private final int maxElectionTimeout;
-    private final int logReplicationDelay;
-    private final int logReplicationInterval;
+    private final int minElectionTimeout; // NOTE: htt, 选举最小超时时间，默认为3s
+    private final int maxElectionTimeout; // NOTE: htt, 选举最大超时时间，默认为4s
+    private final int logReplicationDelay; // NOTE: htt, 成为主之后，多久开始发送 noop 日志，默认为0s
+    private final int logReplicationInterval; // NOTE: htt, 日志同步即心跳超时时间，默认为1s
     private final Random electionTimeoutRandom;
-    private final ScheduledExecutorService scheduledExecutorService;
+    private final ScheduledExecutorService scheduledExecutorService; // NOTE: htt, 单线程调度线程池
 
     public DefaultScheduler(NodeConfig config) {
         this(config.getMinElectionTimeout(), config.getMaxElectionTimeout(), config.getLogReplicationDelay(),
@@ -50,8 +50,8 @@ public class DefaultScheduler implements Scheduler {
         Preconditions.checkNotNull(task);
         logger.debug("schedule log replication task");
         ScheduledFuture<?> scheduledFuture = this.scheduledExecutorService.scheduleWithFixedDelay(
-                task, logReplicationDelay, logReplicationInterval, TimeUnit.MILLISECONDS);
-        return new LogReplicationTask(scheduledFuture);
+                task, logReplicationDelay, logReplicationInterval, TimeUnit.MILLISECONDS); // NOTE: htt, 首次是立即执行，然后1000ms时间间隔执行心跳
+        return new LogReplicationTask(scheduledFuture); // NOTE: htt, 返回日志同步的 future处理，以便后续根据需要取消
     }
 
     @Override
@@ -59,9 +59,11 @@ public class DefaultScheduler implements Scheduler {
     public ElectionTimeout scheduleElectionTimeout(@Nonnull Runnable task) {
         Preconditions.checkNotNull(task);
         logger.debug("schedule election timeout");
-        int timeout = electionTimeoutRandom.nextInt(maxElectionTimeout - minElectionTimeout) + minElectionTimeout;
-        ScheduledFuture<?> scheduledFuture = scheduledExecutorService.schedule(task, timeout, TimeUnit.MILLISECONDS);
-        return new ElectionTimeout(scheduledFuture);
+        int timeout = electionTimeoutRandom.nextInt(maxElectionTimeout - minElectionTimeout) + minElectionTimeout; // NOTE: htt, 3000ms-4000ms之间
+
+        // NOTE: htt, follower每次在收到服务器端的心跳后都会重新更新当前的选主超时时间
+        ScheduledFuture<?> scheduledFuture = scheduledExecutorService.schedule(task, timeout, TimeUnit.MILLISECONDS); // NOTE: htt, 等待 timeout后再次进行选举
+        return new ElectionTimeout(scheduledFuture); // NOTE: htt, 返回选举的future处理，以便后续根据需要取消（比如选主成功）
     }
 
     @Override
