@@ -4,12 +4,12 @@ import in.xnnyygn.xraft.core.node.NodeId;
 
 import java.io.Serializable;
 
-public class RequestVoteRpc implements Serializable {
-
-    private int term;
-    private NodeId candidateId;
-    private int lastLogIndex = 0;
-    private int lastLogTerm = 0;
+public class RequestVoteRpc implements Serializable { // NOTE: htt, 第一阶段的投票选主请求
+    // TODO: htt, 需要类似的 AppendEntriesRpc 有一个 messageId用于判断回包是否为原来的RequestVoteRpc发出的
+    private int term; // NOTE: htt, 当前term
+    private NodeId candidateId; // NOTE: htt, 投票的候选id
+    private int lastLogIndex = 0; // NOTE; htt, 最后一次提交日志的 index
+    private int lastLogTerm = 0; // NOTE: htt, 最后一次提交日志的 term
 
     public int getTerm() {
         return term;

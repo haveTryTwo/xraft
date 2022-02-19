@@ -10,7 +10,7 @@ import java.util.Collection;
 import java.util.LinkedList;
 import java.util.List;
 
-public class MockConnector extends ConnectorAdapter {
+public class MockConnector extends ConnectorAdapter { // NOTE: htt, mock connector，采用内存messages封装对应的消息，用于测试，TODO:可以移到测试
 
     private LinkedList<Message> messages = new LinkedList<>();
 
@@ -63,7 +63,7 @@ public class MockConnector extends ConnectorAdapter {
 
     public Message getLastMessage() {
         return messages.isEmpty() ? null : messages.getLast();
-    }
+    } // NOTE: htt, 最后一条消息
 
     private Message getLastMessageOrDefault() {
         return messages.isEmpty() ? new Message() : messages.getLast();
@@ -93,11 +93,11 @@ public class MockConnector extends ConnectorAdapter {
         messages.clear();
     }
 
-    public static class Message {
+    public static class Message { // NOTE: 请求消息，可以使用泛型
 
-        private Object rpc;
-        private NodeId destinationNodeId;
-        private Object result;
+        private Object rpc; // NOTE: htt, raft 的rpc请求
+        private NodeId destinationNodeId; // NOTE: htt, 指定的单个目标节点id
+        private Object result; // NOTE: htt, 结果
 
         public Object getRpc() {
             return rpc;

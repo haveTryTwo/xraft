@@ -7,15 +7,15 @@ import java.io.Serializable;
 import java.util.Collections;
 import java.util.List;
 
-public class AppendEntriesRpc implements Serializable {
+public class AppendEntriesRpc implements Serializable { // NOTE: htt, 第二阶段，master发送日志条目请求
 
-    private String messageId;
-    private int term;
-    private NodeId leaderId;
-    private int prevLogIndex = 0;
-    private int prevLogTerm;
-    private List<Entry> entries = Collections.emptyList();
-    private int leaderCommit;
+    private String messageId; // NOTE: htt, 消息id
+    private int term; // NOTE: htt, 当前term
+    private NodeId leaderId; // NOTE: htt, 节点id
+    private int prevLogIndex = 0; // NOTE: htt, 上一个log index
+    private int prevLogTerm; // NOTE: htt, 上一个 log term
+    private List<Entry> entries = Collections.emptyList(); // NOTE: htt, 需要同步日志条目
+    private int leaderCommit; // NOTE: htt, leader commit的index
 
     public String getMessageId() {
         return messageId;
@@ -73,7 +73,7 @@ public class AppendEntriesRpc implements Serializable {
         this.leaderCommit = leaderCommit;
     }
 
-    public int getLastEntryIndex() {
+    public int getLastEntryIndex() { // NOTE: htt, 获取最后一条日志条目的index
         return this.entries.isEmpty() ? this.prevLogIndex : this.entries.get(this.entries.size() - 1).getIndex();
     }
 

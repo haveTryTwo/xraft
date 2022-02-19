@@ -25,16 +25,16 @@ import java.util.concurrent.Executors;
 
 // TODO add test
 @ThreadSafe
-public class NioConnector implements Connector {
+public class NioConnector implements Connector { // NOTE: htt, nio connector，用于创建服务器连接，并做client给其他节点发送请求
 
     private static final Logger logger = LoggerFactory.getLogger(NioConnector.class);
     private final NioEventLoopGroup bossNioEventLoopGroup = new NioEventLoopGroup(1);
-    private final NioEventLoopGroup workerNioEventLoopGroup;
+    private final NioEventLoopGroup workerNioEventLoopGroup; // NOTE: htt, 是否共用 worker event loop group
     private final boolean workerGroupShared;
-    private final EventBus eventBus;
+    private final EventBus eventBus; // NOTE: htt, 内部请求同步
     private final int port;
     private final InboundChannelGroup inboundChannelGroup = new InboundChannelGroup();
-    private final OutboundChannelGroup outboundChannelGroup;
+    private final OutboundChannelGroup outboundChannelGroup; // NOTE: htt, 出链接group，即为client角色处理
     private final ExecutorService executorService = Executors.newCachedThreadPool((r) -> {
         Thread thread = new Thread(r);
         thread.setUncaughtExceptionHandler((t, e) -> {
@@ -63,7 +63,7 @@ public class NioConnector implements Connector {
 
     // should not call more than once
     @Override
-    public void initialize() {
+    public void initialize() { // NOTE: htt, 启动服务器端
         ServerBootstrap serverBootstrap = new ServerBootstrap()
                 .group(bossNioEventLoopGroup, workerNioEventLoopGroup)
                 .channel(NioServerSocketChannel.class)
@@ -78,7 +78,7 @@ public class NioConnector implements Connector {
                 });
         logger.debug("node listen on port {}", port);
         try {
-            serverBootstrap.bind(port).sync();
+            serverBootstrap.bind(port).sync(); // NOTE: htt, 建立端口，启动服务器
         } catch (InterruptedException e) {
             throw new ConnectorException("failed to bind port", e);
         }
@@ -88,9 +88,9 @@ public class NioConnector implements Connector {
     public void sendRequestVote(@Nonnull RequestVoteRpc rpc, @Nonnull Collection<NodeEndpoint> destinationEndpoints) {
         Preconditions.checkNotNull(rpc);
         Preconditions.checkNotNull(destinationEndpoints);
-        for (NodeEndpoint endpoint : destinationEndpoints) {
+        for (NodeEndpoint endpoint : destinationEndpoints) { // NOTE: htt, 逐个发送
             logger.debug("send {} to node {}", rpc, endpoint.getId());
-            executorService.execute(() -> getChannel(endpoint).writeRequestVoteRpc(rpc));
+            executorService.execute(() -> getChannel(endpoint).writeRequestVoteRpc(rpc)); // NOTE: htt, 发送选主请求
         }
     }
 
@@ -108,7 +108,7 @@ public class NioConnector implements Connector {
         Preconditions.checkNotNull(rpcMessage);
         logger.debug("reply {} to node {}", result, rpcMessage.getSourceNodeId());
         try {
-            rpcMessage.getChannel().writeRequestVoteResult(result);
+            rpcMessage.getChannel().writeRequestVoteResult(result); // NOTE: htt, 回写 选主回包请求，使用和对端已经建立的连接来发送请求
         } catch (Exception e) {
             logException(e);
         }
@@ -119,7 +119,7 @@ public class NioConnector implements Connector {
         Preconditions.checkNotNull(rpc);
         Preconditions.checkNotNull(destinationEndpoint);
         logger.debug("send {} to node {}", rpc, destinationEndpoint.getId());
-        executorService.execute(() -> getChannel(destinationEndpoint).writeAppendEntriesRpc(rpc));
+        executorService.execute(() -> getChannel(destinationEndpoint).writeAppendEntriesRpc(rpc)); // NOTE: htt, 发送日志请求
     }
 
     @Override
@@ -128,7 +128,7 @@ public class NioConnector implements Connector {
         Preconditions.checkNotNull(rpcMessage);
         logger.debug("reply {} to node {}", result, rpcMessage.getSourceNodeId());
         try {
-            rpcMessage.getChannel().writeAppendEntriesResult(result);
+            rpcMessage.getChannel().writeAppendEntriesResult(result); // NOTE: htt, 回复 日志回包请求，使用和对端已经建立的连接来发送请求
         } catch (Exception e) {
             logException(e);
         }
@@ -140,7 +140,7 @@ public class NioConnector implements Connector {
         Preconditions.checkNotNull(destinationEndpoint);
         logger.debug("send {} to node {}", rpc, destinationEndpoint.getId());
         try {
-            getChannel(destinationEndpoint).writeInstallSnapshotRpc(rpc);
+            getChannel(destinationEndpoint).writeInstallSnapshotRpc(rpc); // NOTE: htt, 直接发送 快照安装 请求 TODO: cache线程池?
         } catch (Exception e) {
             logException(e);
         }
@@ -152,7 +152,7 @@ public class NioConnector implements Connector {
         Preconditions.checkNotNull(rpcMessage);
         logger.debug("reply {} to node {}", result, rpcMessage.getSourceNodeId());
         try {
-            rpcMessage.getChannel().writeInstallSnapshotResult(result);
+            rpcMessage.getChannel().writeInstallSnapshotResult(result); // NOTE: htt, 回复快照回包请求
         } catch (Exception e) {
             logException(e);
         }
@@ -163,7 +163,7 @@ public class NioConnector implements Connector {
         inboundChannelGroup.closeAll();
     }
 
-    private Channel getChannel(NodeEndpoint endpoint) {
+    private Channel getChannel(NodeEndpoint endpoint) { // NOTE: htt, 创建client连接，并返回 NioChannel
         return outboundChannelGroup.getOrConnect(endpoint.getId(), endpoint.getAddress());
     }
 

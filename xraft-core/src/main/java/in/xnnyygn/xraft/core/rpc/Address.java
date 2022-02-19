@@ -5,14 +5,11 @@ import com.google.common.base.Preconditions;
 import javax.annotation.Nonnull;
 import javax.annotation.concurrent.Immutable;
 
-/**
- * Address.
- */
 @Immutable
-public class Address {
+public class Address { // NOTE: htt,  host 和 port信息
 
-    private final String host;
-    private final int port;
+    private final String host; // NOTE: htt, host 即ip
+    private final int port; // NOTE: htt, 端口
 
     /**
      * Create.

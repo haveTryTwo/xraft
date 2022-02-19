@@ -10,7 +10,7 @@ import java.util.Collection;
 /**
  * Connector.
  */
-public interface Connector {
+public interface Connector { // NOTE: htt, 连接器，用来处理 raft中 选主、发送日志、以及快照安装请求；
 
     /**
      * Initialize connector.
@@ -32,7 +32,7 @@ public interface Connector {
      * @param rpc                  rpc
      * @param destinationEndpoints destination endpoints
      */
-    void sendRequestVote(@Nonnull RequestVoteRpc rpc, @Nonnull Collection<NodeEndpoint> destinationEndpoints);
+    void sendRequestVote(@Nonnull RequestVoteRpc rpc, @Nonnull Collection<NodeEndpoint> destinationEndpoints); // NOTE: htt, 发送选主请求
 
     /**
      * Reply request vote result.
@@ -40,7 +40,7 @@ public interface Connector {
      * @param result     result
      * @param rpcMessage rpc message
      */
-    void replyRequestVote(@Nonnull RequestVoteResult result, @Nonnull RequestVoteRpcMessage rpcMessage);
+    void replyRequestVote(@Nonnull RequestVoteResult result, @Nonnull RequestVoteRpcMessage rpcMessage); // NOTE: htt, 回复选主请求，包括处理选主逻辑
 
     /**
      * Send append entries rpc.
@@ -48,7 +48,7 @@ public interface Connector {
      * @param rpc                 rpc
      * @param destinationEndpoint destination endpoint
      */
-    void sendAppendEntries(@Nonnull AppendEntriesRpc rpc, @Nonnull NodeEndpoint destinationEndpoint);
+    void sendAppendEntries(@Nonnull AppendEntriesRpc rpc, @Nonnull NodeEndpoint destinationEndpoint); // NOTE: htt, 指定节点发送添加日志请求
 
     /**
      * Reply append entries result.
@@ -56,7 +56,7 @@ public interface Connector {
      * @param result result
      * @param rpcMessage rpc message
      */
-    void replyAppendEntries(@Nonnull AppendEntriesResult result, @Nonnull AppendEntriesRpcMessage rpcMessage);
+    void replyAppendEntries(@Nonnull AppendEntriesResult result, @Nonnull AppendEntriesRpcMessage rpcMessage); // NOTE: htt, 回复日志请求
 
     /**
      * Send install snapshot rpc.
@@ -64,7 +64,7 @@ public interface Connector {
      * @param rpc rpc
      * @param destinationEndpoint destination endpoint
      */
-    void sendInstallSnapshot(@Nonnull InstallSnapshotRpc rpc, @Nonnull NodeEndpoint destinationEndpoint);
+    void sendInstallSnapshot(@Nonnull InstallSnapshotRpc rpc, @Nonnull NodeEndpoint destinationEndpoint); // NOTE: htt, 发送快照安装请求
 
     /**
      * Reply install snapshot result.
@@ -72,7 +72,7 @@ public interface Connector {
      * @param result result
      * @param rpcMessage rpc message
      */
-    void replyInstallSnapshot(@Nonnull InstallSnapshotResult result, @Nonnull InstallSnapshotRpcMessage rpcMessage);
+    void replyInstallSnapshot(@Nonnull InstallSnapshotResult result, @Nonnull InstallSnapshotRpcMessage rpcMessage); // NOTE: htt, 回复快照安装请求
 
     /**
      * Called when node becomes leader.

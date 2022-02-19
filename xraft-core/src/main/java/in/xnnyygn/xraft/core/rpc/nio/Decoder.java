@@ -12,7 +12,7 @@ import io.netty.handler.codec.ByteToMessageDecoder;
 import java.util.List;
 import java.util.stream.Collectors;
 
-public class Decoder extends ByteToMessageDecoder {
+public class Decoder extends ByteToMessageDecoder { // NOTE: htt, 接收并解网络请求，同时将body反解为实际的 请求
 
     private final EntryFactory entryFactory = new EntryFactory();
 
@@ -24,7 +24,7 @@ public class Decoder extends ByteToMessageDecoder {
         in.markReaderIndex();
         int messageType = in.readInt();
         int payloadLength = in.readInt();
-        if (in.readableBytes() < payloadLength) {
+        if (in.readableBytes() < payloadLength) { // NOTE: htt, 内容不完全，则继续接收数据
             in.resetReaderIndex();
             return;
         }
@@ -32,10 +32,10 @@ public class Decoder extends ByteToMessageDecoder {
         byte[] payload = new byte[payloadLength];
         in.readBytes(payload);
         switch (messageType) {
-            case MessageConstants.MSG_TYPE_NODE_ID:
+            case MessageConstants.MSG_TYPE_NODE_ID: // NOTE: htt, 节点类型请求
                 out.add(new NodeId(new String(payload)));
                 break;
-            case MessageConstants.MSG_TYPE_REQUEST_VOTE_RPC:
+            case MessageConstants.MSG_TYPE_REQUEST_VOTE_RPC: // NOTE: htt, 选主协议请求
                 Protos.RequestVoteRpc protoRVRpc = Protos.RequestVoteRpc.parseFrom(payload);
                 RequestVoteRpc rpc = new RequestVoteRpc();
                 rpc.setTerm(protoRVRpc.getTerm());
@@ -44,11 +44,11 @@ public class Decoder extends ByteToMessageDecoder {
                 rpc.setLastLogTerm(protoRVRpc.getLastLogTerm());
                 out.add(rpc);
                 break;
-            case MessageConstants.MSG_TYPE_REQUEST_VOTE_RESULT:
+            case MessageConstants.MSG_TYPE_REQUEST_VOTE_RESULT: // NOTE: htt, 接收 选主协议回包请求
                 Protos.RequestVoteResult protoRVResult = Protos.RequestVoteResult.parseFrom(payload);
                 out.add(new RequestVoteResult(protoRVResult.getTerm(), protoRVResult.getVoteGranted()));
                 break;
-            case MessageConstants.MSG_TYPE_APPEND_ENTRIES_RPC:
+            case MessageConstants.MSG_TYPE_APPEND_ENTRIES_RPC: // NOTE: htt, 接收 日志同步请求
                 Protos.AppendEntriesRpc protoAERpc = Protos.AppendEntriesRpc.parseFrom(payload);
                 AppendEntriesRpc aeRpc = new AppendEntriesRpc();
                 aeRpc.setMessageId(protoAERpc.getMessageId());
@@ -62,11 +62,11 @@ public class Decoder extends ByteToMessageDecoder {
                 ).collect(Collectors.toList()));
                 out.add(aeRpc);
                 break;
-            case MessageConstants.MSG_TYPE_APPEND_ENTRIES_RESULT:
+            case MessageConstants.MSG_TYPE_APPEND_ENTRIES_RESULT: // NOTE: htt, 接收 日志同步回包请求
                 Protos.AppendEntriesResult protoAEResult = Protos.AppendEntriesResult.parseFrom(payload);
                 out.add(new AppendEntriesResult(protoAEResult.getRpcMessageId(), protoAEResult.getTerm(), protoAEResult.getSuccess()));
                 break;
-            case MessageConstants.MSG_TYPE_INSTALL_SNAPSHOT_PRC:
+            case MessageConstants.MSG_TYPE_INSTALL_SNAPSHOT_PRC: // NOTE: htt, 接收 快照安装请求
                 Protos.InstallSnapshotRpc protoISRpc = Protos.InstallSnapshotRpc.parseFrom(payload);
                 InstallSnapshotRpc isRpc = new InstallSnapshotRpc();
                 isRpc.setTerm(protoISRpc.getTerm());
@@ -81,7 +81,7 @@ public class Decoder extends ByteToMessageDecoder {
                 isRpc.setDone(protoISRpc.getDone());
                 out.add(isRpc);
                 break;
-            case MessageConstants.MSG_TYPE_INSTALL_SNAPSHOT_RESULT:
+            case MessageConstants.MSG_TYPE_INSTALL_SNAPSHOT_RESULT: // NOTE: htt, 接收快照安装回包请求
                 Protos.InstallSnapshotResult protoISResult = Protos.InstallSnapshotResult.parseFrom(payload);
                 out.add(new InstallSnapshotResult(protoISResult.getTerm()));
                 break;

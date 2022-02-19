@@ -5,16 +5,16 @@ import in.xnnyygn.xraft.core.node.NodeId;
 
 import java.util.Set;
 
-public class InstallSnapshotRpc {
+public class InstallSnapshotRpc { // NOTE: htt, 快照安装的请求
 
-    private int term;
-    private NodeId leaderId;
-    private int lastIndex;
-    private int lastTerm;
-    private Set<NodeEndpoint> lastConfig;
-    private int offset;
-    private byte[] data;
-    private boolean done;
+    private int term; // NOTE: htt, 当前term
+    private NodeId leaderId; // NOTE: htt, 节点leaderid
+    private int lastIndex; // NOTE: htt, 最近index
+    private int lastTerm; // NOTE: htt, 最近term
+    private Set<NodeEndpoint> lastConfig; // NOTE: htt, 当前快照对应的 节点列表
+    private int offset; // NOTE: htt, 快照同步的offset
+    private byte[] data; // NOTE: htt, 快照同步的数据
+    private boolean done; // NOTE: htt, 快照同步完成标志
 
     public int getTerm() {
         return term;

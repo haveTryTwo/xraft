@@ -6,9 +6,9 @@ import in.xnnyygn.xraft.core.rpc.message.*;
 
 import javax.annotation.Nonnull;
 
-class NioChannel implements Channel {
+class NioChannel implements Channel { // NOTE: htt, 封装的nio channel，使用数据发送
 
-    private final io.netty.channel.Channel nettyChannel;
+    private final io.netty.channel.Channel nettyChannel; // NOTE: htt, netty的channel，用于实际发送数据
 
     NioChannel(io.netty.channel.Channel nettyChannel) {
         this.nettyChannel = nettyChannel;

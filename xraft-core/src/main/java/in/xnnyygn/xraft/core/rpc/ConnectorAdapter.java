@@ -7,7 +7,7 @@ import in.xnnyygn.xraft.core.rpc.message.*;
 import javax.annotation.Nonnull;
 import java.util.Collection;
 
-public abstract class ConnectorAdapter implements Connector {
+public abstract class ConnectorAdapter implements Connector { // NOTE: htt, connector适配器，实际是空处理，可以进一步抽象，或直接 NullConnector
 
     @Override
     public void initialize() {

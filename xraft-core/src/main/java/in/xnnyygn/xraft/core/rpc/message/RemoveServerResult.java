@@ -2,10 +2,10 @@ package in.xnnyygn.xraft.core.rpc.message;
 
 import in.xnnyygn.xraft.core.node.NodeEndpoint;
 
-public class RemoveServerResult {
+public class RemoveServerResult { // NOTE: htt, 删除服务结果
 
-    private final GroupConfigChangeStatus status;
-    private final NodeEndpoint leaderHint;
+    private final GroupConfigChangeStatus status;  // NOTE: htt, 集群配置变化状态
+    private final NodeEndpoint leaderHint; // NOTE: htt, leader 节点
 
     public RemoveServerResult(GroupConfigChangeStatus status, NodeEndpoint leaderHint) {
         this.status = status;

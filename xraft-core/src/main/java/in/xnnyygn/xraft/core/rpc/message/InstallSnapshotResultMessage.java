@@ -5,11 +5,11 @@ import in.xnnyygn.xraft.core.node.NodeId;
 
 import javax.annotation.Nonnull;
 
-public class InstallSnapshotResultMessage {
+public class InstallSnapshotResultMessage { // NOTE: htt, 安装快照请求回包封装
 
-    private final InstallSnapshotResult result;
-    private final NodeId sourceNodeId;
-    private final InstallSnapshotRpc rpc;
+    private final InstallSnapshotResult result; // NOTE: htt, 安装快照请求回包
+    private final NodeId sourceNodeId; // NOTE: htt, 目标id，对端节点
+    private final InstallSnapshotRpc rpc; // NOTE: htt, 安装快照请求
 
     public InstallSnapshotResultMessage(InstallSnapshotResult result, NodeId sourceNodeId, @Nonnull InstallSnapshotRpc rpc) {
         Preconditions.checkNotNull(rpc);
