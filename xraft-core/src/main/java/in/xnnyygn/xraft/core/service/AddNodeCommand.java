@@ -4,11 +4,11 @@ import in.xnnyygn.xraft.core.node.NodeEndpoint;
 
 // TODO remove me
 @Deprecated
-public class AddNodeCommand {
+public class AddNodeCommand { // NOTE: htt, 添加节点命令
 
-    private final String nodeId;
-    private final String host;
-    private final int port;
+    private final String nodeId; // NOTE: htt, 节点id
+    private final String host; // NOTE: htt, 节点host
+    private final int port; // NOTE: htt, 节点端口
 
     public AddNodeCommand(String nodeId, String host, int port) {
         this.nodeId = nodeId;

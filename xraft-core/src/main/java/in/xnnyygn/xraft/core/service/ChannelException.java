@@ -1,6 +1,6 @@
 package in.xnnyygn.xraft.core.service;
 
-public class ChannelException extends RuntimeException {
+public class ChannelException extends RuntimeException { // NOTE: htt, 管道异常
 
     public ChannelException() {
     }
