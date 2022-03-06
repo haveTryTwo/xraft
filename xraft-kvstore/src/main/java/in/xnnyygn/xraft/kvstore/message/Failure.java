@@ -1,9 +1,9 @@
 package in.xnnyygn.xraft.kvstore.message;
 
-public class Failure {
+public class Failure { // NOTE: htt, 失败消息
 
-    private final int errorCode;
-    private final String message;
+    private final int errorCode; // NOTE: htt, 错误码
+    private final String message; // NOTE: htt, 错误消息
 
     public Failure(int errorCode, String message) {
         this.errorCode = errorCode;

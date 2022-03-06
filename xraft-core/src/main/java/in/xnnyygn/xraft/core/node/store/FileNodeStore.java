@@ -89,7 +89,7 @@ public class FileNodeStore implements NodeStore { // NOTE: htt, 文件存储当�
                 seekableFile.writeInt(0);
             } else {
                 byte[] bytes = votedFor.getValue().getBytes();
-                seekableFile.writeInt(bytes.length);
+                seekableFile.writeInt(bytes.length); // TODO: htt, 文件写入为0，待跟进
                 seekableFile.write(bytes);
             }
         } catch (IOException e) {

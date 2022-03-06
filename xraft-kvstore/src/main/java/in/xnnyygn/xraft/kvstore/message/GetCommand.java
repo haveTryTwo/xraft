@@ -1,6 +1,6 @@
 package in.xnnyygn.xraft.kvstore.message;
 
-public class GetCommand  {
+public class GetCommand  { // NOTE: htt, Get命令
 
     private final String key;
 

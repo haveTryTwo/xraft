@@ -20,7 +20,7 @@ public class DefaultScheduler implements Scheduler { // NOTE: htt, 默认调度�
     private final int minElectionTimeout; // NOTE: htt, 选举最小超时时间，默认为3s
     private final int maxElectionTimeout; // NOTE: htt, 选举最大超时时间，默认为4s
     private final int logReplicationDelay; // NOTE: htt, 成为主之后，多久开始发送 noop 日志，默认为0s
-    private final int logReplicationInterval; // NOTE: htt, 日志同步即心跳超时时间，默认为1s
+    private final int logReplicationInterval; // NOTE: htt, 日志同步即心跳超时时间，默认为1s，即会同步appendEntry消息，即心跳
     private final Random electionTimeoutRandom;
     private final ScheduledExecutorService scheduledExecutorService; // NOTE: htt, 单线程调度线程池
 

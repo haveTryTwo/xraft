@@ -1,9 +1,9 @@
 package in.xnnyygn.xraft.kvstore.message;
 
-public class GetCommandResponse {
+public class GetCommandResponse { // NOTE: htt, GET回包
 
-    private final boolean found;
-    private final byte[] value;
+    private final boolean found; // NOTE: htt, 是否有查找到
+    private final byte[] value; // NOTE: htt, 对应的value值
 
     public GetCommandResponse(byte[] value) {
         this(value != null, value);
