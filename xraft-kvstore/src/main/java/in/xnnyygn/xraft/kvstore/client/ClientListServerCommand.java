@@ -1,6 +1,6 @@
 package in.xnnyygn.xraft.kvstore.client;
 
-public class ClientListServerCommand implements Command {
+public class ClientListServerCommand implements Command { // NOTE: htt, 打印xraft的列表
 
     @Override
     public String getName() {

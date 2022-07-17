@@ -2,12 +2,12 @@ package in.xnnyygn.xraft.kvstore.client;
 
 import in.xnnyygn.xraft.core.service.NoAvailableServerException;
 
-public class RaftAddNodeCommand implements Command {
+public class RaftAddNodeCommand implements Command { // NOTE: htt, 添加节点命令
 
     @Override
     public String getName() {
         return "raft-add-node";
-    }
+    } // NOTE: htt, 添加节点
 
     @Override
     public void execute(String arguments, CommandContext context) {

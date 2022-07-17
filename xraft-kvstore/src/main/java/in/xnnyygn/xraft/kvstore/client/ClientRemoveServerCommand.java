@@ -1,6 +1,6 @@
 package in.xnnyygn.xraft.kvstore.client;
 
-public class ClientRemoveServerCommand implements Command {
+public class ClientRemoveServerCommand implements Command { // NOTE: htt, 添加xraft节点命令
 
     @Override
     public String getName() {
@@ -13,7 +13,7 @@ public class ClientRemoveServerCommand implements Command {
             throw new IllegalArgumentException("usage: " + getName() + " <node-id>");
         }
 
-        if (context.clientRemoveServer(arguments)) {
+        if (context.clientRemoveServer(arguments)) { // NOTE: htt, 删除节点并重新构建client
             context.printSeverList();
         } else {
             System.err.println("no such server [" + arguments + "]");

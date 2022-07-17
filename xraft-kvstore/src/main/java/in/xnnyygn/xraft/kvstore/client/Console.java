@@ -11,12 +11,12 @@ import org.jline.reader.impl.completer.StringsCompleter;
 
 import java.util.*;
 
-public class Console {
+public class Console { // NOTE: htt, 终端执行xraft相关命令
 
     private static final String PROMPT = "kvstore-client " + Client.VERSION + "> ";
-    private final Map<String, Command> commandMap;
-    private final CommandContext commandContext;
-    private final LineReader reader;
+    private final Map<String, Command> commandMap; // NOTE: htt, 命令列表，对应为 <commandName, Command>
+    private final CommandContext commandContext; // NOTE: htt, Command内容，包括 服务列表，已经构建对应的 channel
+    private final LineReader reader; // NOTE: htt, 命令读取
 
     public Console(Map<NodeId, Address> serverMap) {
         commandMap = buildCommandMap(Arrays.asList(
@@ -50,9 +50,9 @@ public class Console {
         return commandMap;
     }
 
-    void start() {
+    void start() { // NOTE: htt, 启动，循环执行
         commandContext.setRunning(true);
-        showInfo();
+        showInfo(); // NOTE: htt, 显示列表
         String line;
         while (commandContext.isRunning()) {
             try {
@@ -83,7 +83,7 @@ public class Console {
         if (command == null) {
             throw new IllegalArgumentException("no such command [" + commandName + "]");
         }
-        command.execute(commandNameAndArguments.length > 1 ? commandNameAndArguments[1] : "", commandContext);
+        command.execute(commandNameAndArguments.length > 1 ? commandNameAndArguments[1] : "", commandContext); // NOTE: htt, 执行命令
     }
 
 }

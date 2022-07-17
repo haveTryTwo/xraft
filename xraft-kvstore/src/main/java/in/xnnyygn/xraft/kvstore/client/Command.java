@@ -1,6 +1,6 @@
 package in.xnnyygn.xraft.kvstore.client;
 
-public interface Command {
+public interface Command { // NOTE: htt, 操作命令
 
     String getName();
 

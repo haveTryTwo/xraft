@@ -1,6 +1,6 @@
 package in.xnnyygn.xraft.kvstore.client;
 
-public class ClientGetLeaderCommand implements Command {
+public class ClientGetLeaderCommand implements Command { // NOTE: htt, 获取xraft服务端 leaderId
 
     @Override
     public String getName() {

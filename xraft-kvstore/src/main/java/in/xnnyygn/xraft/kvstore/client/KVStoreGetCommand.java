@@ -2,12 +2,12 @@ package in.xnnyygn.xraft.kvstore.client;
 
 import in.xnnyygn.xraft.core.service.NoAvailableServerException;
 
-public class KVStoreGetCommand implements Command {
+public class KVStoreGetCommand implements Command { // NOTE: htt, GET key 命令
 
     @Override
     public String getName() {
         return "kvstore-get";
-    }
+    } // NOTE: htt, get命令
 
     @Override
     public void execute(String arguments, CommandContext context) {
@@ -17,7 +17,7 @@ public class KVStoreGetCommand implements Command {
 
         byte[] valueBytes;
         try {
-            valueBytes = context.getClient().get(arguments);
+            valueBytes = context.getClient().get(arguments); // NOTE: htt, get arguments对应的value
         } catch (NoAvailableServerException e) {
             System.err.println(e.getMessage());
             return;

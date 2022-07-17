@@ -1,6 +1,6 @@
 package in.xnnyygn.xraft.kvstore.client;
 
-public class ClientAddServerCommand implements Command {
+public class ClientAddServerCommand implements Command { // NOTE: htt, 添加节点命令，操作是context中添加节点并构建新的client
 
     @Override
     public String getName() {
@@ -24,7 +24,7 @@ public class ClientAddServerCommand implements Command {
             throw new IllegalArgumentException("illegal port [" + pieces[2] + "]");
         }
 
-        context.clientAddServer(nodeId, host, port);
+        context.clientAddServer(nodeId, host, port); // NOTE: htt, context添加节点，并生成新的client
         context.printSeverList();
     }
 

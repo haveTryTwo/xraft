@@ -7,9 +7,9 @@ import org.apache.commons.cli.*;
 import java.util.HashMap;
 import java.util.Map;
 
-public class ConsoleLauncher {
+public class ConsoleLauncher { // NOTE: htt, 客户端终端launcher启动
 
-    private static class ServerConfig {
+    private static class ServerConfig { // NOTE: htt, 服务端配置
 
         private final String nodeId;
         private final String host;
@@ -60,11 +60,11 @@ public class ConsoleLauncher {
             return;
         }
 
-        Console console = new Console(serverMap);
-        console.start();
+        Console console = new Console(serverMap); // NOTE: htt, 构建终端
+        console.start(); // NOTE: htt 启动终端
     }
 
-    private Map<NodeId, Address> parseGroupConfig(String[] rawGroupConfig) {
+    private Map<NodeId, Address> parseGroupConfig(String[] rawGroupConfig) { // NOTE: htt, 解析服务列表
         Map<NodeId, Address> serverMap = new HashMap<>();
         for (String rawServerConfig : rawGroupConfig) {
             ServerConfig serverConfig = parseServerConfig(rawServerConfig);
@@ -73,7 +73,7 @@ public class ConsoleLauncher {
         return serverMap;
     }
 
-    private ServerConfig parseServerConfig(String rawServerConfig) {
+    private ServerConfig parseServerConfig(String rawServerConfig) { // NOTE: htt, 获取 <nodeId, host, port>
         String[] pieces = rawServerConfig.split(",");
         if (pieces.length != 3) {
             throw new IllegalArgumentException("illegal server config [" + rawServerConfig + "]");
