@@ -4,15 +4,13 @@ option java_package = "in.xnnyygn.xraft.core";
 option java_outer_classname = "Protos";
 
 // common
-
 message NodeEndpoint {
     string id = 1;
     string host = 2;
     int32 port = 3;
 }
 
-// rpc
-
+// rpc：选主协议
 message RequestVoteRpc {
     int32 term = 1;
     string candidate_id = 2;
@@ -25,6 +23,7 @@ message RequestVoteResult {
     bool vote_granted = 2;
 }
 
+// NOTE: htt, 同步日志协议
 message AppendEntriesRpc {
     string message_id = 1;
     int32 term = 2;
@@ -49,6 +48,7 @@ message AppendEntriesResult {
     bool success = 3;
 }
 
+// NOTE: htt, 安装快照协议
 message InstallSnapshotRpc {
     int32 term = 1;
     string leader_id = 2;
@@ -64,6 +64,7 @@ message InstallSnapshotResult {
     int32 term = 1;
 }
 
+// NOTE: htt, 添加服务协议
 message AddServerRpc {
     NodeEndpoint new_server = 1;
 }
@@ -73,6 +74,7 @@ message AddServerResult {
     NodeEndpoint leader_hint = 2;
 }
 
+// NOTE: htt, 删除服务协议
 message RemoveServerRpc {
     NodeEndpoint old_server = 1;
 }
@@ -83,17 +85,19 @@ message RemoveServerResult {
 }
 
 // log
-
+// NOTE: htt, 新增节点的pb协议
 message AddNodeCommand {
     repeated NodeEndpoint node_endpoints = 1;
     NodeEndpoint new_node_endpoint = 2;
 }
 
+// NOTE: htt, 删除节点的pb的协议
 message RemoveNodeCommand {
     repeated NodeEndpoint node_endpoints = 1;
     string node_to_remove = 2;
 }
 
+// NOTE: htt, 快照header协议
 message SnapshotHeader {
     int32 last_index = 1;
     int32 last_term = 2;

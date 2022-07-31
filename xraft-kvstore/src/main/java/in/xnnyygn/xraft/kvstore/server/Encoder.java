@@ -13,7 +13,7 @@ import io.netty.handler.codec.MessageToByteEncoder;
 
 import java.io.IOException;
 
-public class Encoder extends MessageToByteEncoder<Object> {
+public class Encoder extends MessageToByteEncoder<Object> { // NOTE: htt, 将内存消息转换pb，以便进行序列化
 
     @Override
     protected void encode(ChannelHandlerContext ctx, Object msg, ByteBuf out) throws Exception {
@@ -58,10 +58,10 @@ public class Encoder extends MessageToByteEncoder<Object> {
     }
 
     private void writeMessage(int messageType, MessageLite message, ByteBuf out) throws IOException {
-        out.writeInt(messageType);
+        out.writeInt(messageType); // NOTE: htt, 消息类型
         byte[] bytes = message.toByteArray();
-        out.writeInt(bytes.length);
-        out.writeBytes(bytes);
+        out.writeInt(bytes.length); // NOTE: htt, 长度
+        out.writeBytes(bytes); // NOTE: htt, 消息内容
     }
 
 }

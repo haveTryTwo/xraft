@@ -318,6 +318,14 @@ public class MemoryLogTest {
     }
 
     @Test
+    public void testIsNewerThanMoreLogWithlowerTerm() {
+        MemoryLog log = new MemoryLog();
+        log.appendEntry(1);
+        log.appendEntry(1); // index = 2, term = 1
+        Assert.assertFalse(log.isNewerThan(1, 2));
+    }
+
+    @Test
     public void testAppendEntryForAddNode() {
         MemoryLog log = new MemoryLog();
         Assert.assertNull(log.getLastUncommittedGroupConfigEntry());

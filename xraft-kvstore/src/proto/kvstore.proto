@@ -3,32 +3,39 @@ syntax = "proto3";
 option java_package = "in.xnnyygn.xraft.kvstore";
 option java_outer_classname = "Protos";
 
+// NOTE: htt, 重定向到主
 message Redirect {
     string leader_id = 1;
 }
 
+// NOTE: htt, 成功
 message Success {}
 
+// NOTE: htt, 失败消息
 message Failure {
     int32 error_code = 1;
     string message = 2;
 }
 
+// NOTE: htt, 设置命令，包括 key,value，在raft层会将SetCommand序列化为 value写入
 message SetCommand {
     string request_id = 1;
     string key = 2;
     bytes value = 3;
 }
 
+// NOTE: htt, 单条查询命令
 message GetCommand {
     string key = 1;
 }
 
+// NOTE: htt, 命令回包，包括是否查找到以及对应值
 message GetCommandResponse {
     bool found = 1;
     bytes value = 2;
 }
 
+// NOTE: htt, 条目列表，包括一组的 <key, value>
 message EntryList {
     message Entry {
         string key = 1;
@@ -37,12 +44,14 @@ message EntryList {
     repeated Entry entries = 1;
 }
 
+// NOTE: htt, 添加节点命令
 message AddNodeCommand {
     string node_id = 1;
     string host = 2;
     int32 port = 3;
 }
 
+// NOTE: htt, 删除节点命令
 message RemoveNodeCommand {
     string node_id = 1;
 }

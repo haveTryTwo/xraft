@@ -13,7 +13,7 @@ import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 // TODO load config from file
-public class ServerLauncher {
+public class ServerLauncher { // NOTE: htt, 服务命令启动入口
 
     private static final Logger logger = LoggerFactory.getLogger(ServerLauncher.class);
     private static final String MODE_STANDALONE = "standalone";
@@ -21,7 +21,7 @@ public class ServerLauncher {
     private static final String MODE_GROUP_MEMBER = "group-member";
 
     // TODO why volatile?
-    private volatile Server server;
+    private volatile Server server; // NOTE: htt, 启动服务，包括service和node，执行 状态机以及xraft后台服务
 
     private void execute(String[] args) throws Exception {
         Options options = new Options();
@@ -82,7 +82,7 @@ public class ServerLauncher {
             String mode = cmdLine.getOptionValue('m', MODE_STANDALONE);
             switch (mode) {
                 case MODE_STANDBY:
-                    startAsStandaloneOrStandby(cmdLine, true);
+                    startAsStandaloneOrStandby(cmdLine, true); // NOTE: ht,t 作为独立节点启动
                     break;
                 case MODE_STANDALONE:
                     startAsStandaloneOrStandby(cmdLine, false);
@@ -108,18 +108,18 @@ public class ServerLauncher {
         int portRaftServer = ((Long) cmdLine.getParsedOptionValue("p1")).intValue();
         int portService = ((Long) cmdLine.getParsedOptionValue("p2")).intValue();
 
-        NodeEndpoint nodeEndpoint = new NodeEndpoint(id, host, portRaftServer);
+        NodeEndpoint nodeEndpoint = new NodeEndpoint(id, host, portRaftServer); // NOTE: htt, xraft服务
         Node node = new NodeBuilder(nodeEndpoint)
                 .setStandby(standby)
                 .setDataDir(cmdLine.getOptionValue('d'))
                 .build();
-        Server server = new Server(node, portService);
+        Server server = new Server(node, portService); // NOTE: htt, 构建server，包含node和service
         logger.info("start with mode {}, id {}, host {}, port raft node {}, port service {}",
                 (standby ? "standby" : "standalone"), id, host, portRaftServer, portService);
         startServer(server);
     }
 
-    private void startAsGroupMember(CommandLine cmdLine) throws Exception {
+    private void startAsGroupMember(CommandLine cmdLine) throws Exception { // NOTE: htt, 集群方式启动
         if (!cmdLine.hasOption("gc")) {
             throw new IllegalArgumentException("group-config required");
         }
@@ -140,7 +140,7 @@ public class ServerLauncher {
         startServer(server);
     }
 
-    private NodeEndpoint parseNodeEndpoint(String rawNodeEndpoint) {
+    private NodeEndpoint parseNodeEndpoint(String rawNodeEndpoint) { // NOTE: htt, 服务列表
         String[] pieces = rawNodeEndpoint.split(",");
         if (pieces.length != 3) {
             throw new IllegalArgumentException("illegal node endpoint [" + rawNodeEndpoint + "]");
@@ -156,7 +156,7 @@ public class ServerLauncher {
         return new NodeEndpoint(nodeId, host, port);
     }
 
-    private void startServer(Server server) throws Exception {
+    private void startServer(Server server) throws Exception { // NOTE: htt, 启动服务
         this.server = server;
         this.server.start();
         Runtime.getRuntime().addShutdownHook(new Thread(this::stopServer, "shutdown"));

@@ -10,13 +10,13 @@ import io.netty.channel.socket.nio.NioServerSocketChannel;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-public class Server {
+public class Server { // NOTE: htt, 启动服务，包括service和node，执行 状态机以及xraft后台服务
 
     private static final Logger logger = LoggerFactory.getLogger(Server.class);
 
-    private final Node node;
-    private final int port;
-    private final Service service;
+    private final Node node; // NOTE: htt, xraft节点服务
+    private final int port; // NOTE: htt, 状态机端口
+    private final Service service; // NOTE: htt, service状态机服务
     private final NioEventLoopGroup bossGroup = new NioEventLoopGroup(1);
     private final NioEventLoopGroup workerGroup = new NioEventLoopGroup(4);
 

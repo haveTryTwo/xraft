@@ -11,15 +11,15 @@ import io.netty.handler.codec.ByteToMessageDecoder;
 
 import java.util.List;
 
-public class Decoder extends ByteToMessageDecoder {
+public class Decoder extends ByteToMessageDecoder { // NOTE: htt, 消息解码，将pb装换为内存识别消息
 
     @Override
     protected void decode(ChannelHandlerContext ctx, ByteBuf in, List<Object> out) throws Exception {
         if (in.readableBytes() < 8) return;
 
-        in.markReaderIndex();
-        int messageType = in.readInt();
-        int payloadLength = in.readInt();
+        in.markReaderIndex(); // NOTE: htt, 回滚位
+        int messageType = in.readInt(); // NOTE: htt, 消息类型
+        int payloadLength = in.readInt(); // NOTE: htt, 消息长度
         if (in.readableBytes() < payloadLength) {
             in.resetReaderIndex();
             return;
